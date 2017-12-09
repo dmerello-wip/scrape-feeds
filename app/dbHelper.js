@@ -4,23 +4,19 @@ let async = require('async');
 let PRODUCTION_DB = 'app_prod_database';
 let TEST_DB = 'app_test_database';
 
-exports.MODE_TEST = 'mode_test';
-exports.MODE_PRODUCTION = 'mode_production';
 
 let state = {
-    pool: null,
-    mode: null,
+    pool: null
 };
 
-exports.connect = function(mode, done) {
+exports.connect = function(done) {
     state.pool = mysql.createPool({
         host: 'localhost',
         user: 'your_user',
         password: 'some_secret',
-        database: mode === exports.MODE_PRODUCTION ? PRODUCTION_DB : TEST_DB
+        database: 'database-name'
     });
 
-    state.mode = mode;
     done();
 };
 

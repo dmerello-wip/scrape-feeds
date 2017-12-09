@@ -17,7 +17,7 @@ app.get('/', function(req, res) {
 
 
 // Connect to MySQL:
-db.connect(db.MODE_PRODUCTION, function(err) {
+db.connect(function(err) {
     if (err) {
         console.log('Unable to connect to MySQL');
         process.exit(1);
