@@ -12,7 +12,8 @@ router.get('/', function(req, res) {
 });
 
 // giusto per...
-router.get('/test', function(req, res) {
+router.get('/suggestions', function(req, res) {
+    // TODO: chiamare il controller suggestions che chiami i metodi dei models che usa
     res.json({
         test : 'valore'
     });

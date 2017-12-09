@@ -17,6 +17,7 @@ app.get('/', function(req, res) {
 
 
 // Connect to MySQL:
+/*
 db.connect(function(err) {
     if (err) {
         console.log('Unable to connect to MySQL');
@@ -25,6 +26,7 @@ db.connect(function(err) {
         console.log('Connected to mysql');
     }
 });
+*/
 
 app.listen(3000, function () {
     console.log('Suggestions App listening on port 3000');
