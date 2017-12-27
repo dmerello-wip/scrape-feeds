@@ -1,3 +1,5 @@
+let suggestion = require('./models/suggestion');
+
 let express = require('express');
 let router = express.Router();
 
@@ -6,17 +8,25 @@ router.use(function timeLog(req, res, next) {
     next();
 });
 
-// TODO: html response for /api/
 router.get('/', function(req, res) {
     res.send('ask me something...');
 });
 
-// giusto per...
-router.get('/suggestions', function(req, res) {
-    // TODO: chiamare il controller suggestions che chiami i metodi dei models che usa
-    res.json({
+// Suggestions
+router.get('/suggestion/list', function(req, res) {
+    res.json(suggestion.getAll());
+    /*res.json({
         test : 'valore'
-    });
+    });*/
+});
+
+router.get('/suggestion/create', function(req, res) {
+    res.json(suggestion.create(1, 'test di testo'));
+    /*res.json({
+     test : 'valore'
+     });*/
 });
 
 module.exports = router;
+
+

@@ -2,22 +2,16 @@ let express = require('express');
 let app = express();
 
 let apiRouting = require('./apiRoutes');
-let db = require('./dbHelper');
+var db = require('./dbHelper.js');
 
-// serve static files
-app.use(express.static(__dirname + '../public'));
 
-// serve api's
+// FRONTEND: serve static files
+app.use(express.static('public'));
+
+// API: serve api's routes
 app.use('/api', apiRouting);
 
-// serve frontend TODO: html response
-app.get('/', function(req, res) {
-    res.send('siamo in home');
-});
-
-
-// Connect to MySQL:
-/*
+//connect to db
 db.connect(function(err) {
     if (err) {
         console.log('Unable to connect to MySQL');
@@ -26,8 +20,7 @@ db.connect(function(err) {
         console.log('Connected to mysql');
     }
 });
-*/
 
-app.listen(3000, function () {
-    console.log('Suggestions App listening on port 3000');
-});
+module.exports = app;
+
+

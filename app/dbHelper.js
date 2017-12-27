@@ -1,9 +1,6 @@
 let mysql = require('mysql');
 let async = require('async');
 
-let PRODUCTION_DB = 'app_prod_database';
-let TEST_DB = 'app_test_database';
-
 
 let state = {
     pool: null
@@ -12,9 +9,9 @@ let state = {
 exports.connect = function(done) {
     state.pool = mysql.createPool({
         host: 'localhost',
-        user: 'your_user',
-        password: 'some_secret',
-        database: 'database-name'
+        user: 'root',
+        password: 'nimda',
+        database: 'suggestions'
     });
 
     done();
