@@ -1,7 +1,7 @@
-let suggestion = require('./models/suggestion');
+var suggestion = require('./models/suggestion');
 
-let express = require('express');
-let router = express.Router();
+var express = require('express');
+var router = express.Router();
 
 router.use(function timeLog(req, res, next) {
     console.log('called api now: ' + Date.now());
@@ -13,9 +13,10 @@ router.get('/', function(req, res) {
 });
 
 // Suggestions
-router.get('/suggestion/get', suggestion.getAll);
-router.get('/suggestion/get/:id', suggestion.getItem);
+router.get('/suggestion/get', suggestion.list);
+router.get('/suggestion/get/:id', suggestion.get);
 router.post('/suggestion/create', suggestion.create);
+router.post('/suggestion/update', suggestion.update);
 router.post('/suggestion/delete', suggestion.delete);
 
 

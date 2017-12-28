@@ -1,8 +1,7 @@
-let express = require('express');
-let app = express();
-let bodyParser = require('body-parser')
-let apiRouting = require('./apiRoutes');
-
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser')
+var apiRouting = require('./apiRoutes');
 
 // FRONTEND: serve static files
 app.use(express.static('public'));

@@ -33,6 +33,8 @@
             </div>
         </div>
     </form>
+</div>
+<div class="container">
     <h3>test remove post</h3>
     <form action="api/suggestion/delete" method="post">
         <div class="row row-form-contact-1">
@@ -42,6 +44,31 @@
                 </div>
             </div>
             <div class="col-md-4">
+                <button type="submit" class="btn btn-block btn-default">Invia</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="container">
+    <h3>test update post</h3>
+    <form action="api/suggestion/update" method="post">
+        <div class="row row-form-contact-1">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="id"  placeholder="id">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="image"  placeholder="immagine">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <textarea class="form-control" name="description" rows="3" placeholder="descrizione"></textarea>
+                </div>
+            </div>
+            <div class="col-md-3">
                 <button type="submit" class="btn btn-block btn-default">Invia</button>
             </div>
         </div>
