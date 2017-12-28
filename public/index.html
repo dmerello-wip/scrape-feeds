@@ -1,1 +1,58 @@
-sono la index statica
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="it"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang="it"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang="it"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="it"> <!--<![endif]-->
+<head>
+    <title>Suggestion</title>
+</head>
+<body>
+
+<div class="container">
+    <h3>test create post</h3>
+    <form action="api/suggestion/create" method="post">
+        <div class="row row-form-contact-1">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="image"  placeholder="immagine">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <textarea class="form-control" name="description" rows="3" placeholder="descrizione"></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-block btn-default">Invia</button>
+            </div>
+        </div>
+    </form>
+    <h3>test create post</h3>
+    <form action="api/suggestion/update" method="post">
+        <div class="row row-form-contact-1">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="hidden" name="id" value="2">
+                    <input type="text" class="form-control" name="image"  placeholder="immagine">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <textarea class="form-control" name="description" rows="3" placeholder="descrizione"></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-block btn-default">Invia</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
