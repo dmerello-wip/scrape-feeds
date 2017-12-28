@@ -14,7 +14,7 @@ router.get('/', function(req, res) {
 
 // Suggestions
 router.get('/suggestion/list', function(req, res) {
-    res.json(suggestion.getAll());
+    res.json(suggestion.getAll(req, res));
     /*res.json({
         test : 'valore'
     });*/
