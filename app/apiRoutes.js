@@ -14,17 +14,11 @@ router.get('/', function(req, res) {
 
 // Suggestions
 router.get('/suggestion/list', function(req, res) {
-    res.json(suggestion.getAll(req, res));
-    /*res.json({
-        test : 'valore'
-    });*/
+    suggestion.getAll(req, res);
 });
 
 router.get('/suggestion/create', function(req, res) {
-    res.json(suggestion.create(1, 'test di testo'));
-    /*res.json({
-     test : 'valore'
-     });*/
+    suggestion.create(req, res);
 });
 
 module.exports = router;

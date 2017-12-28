@@ -12,7 +12,6 @@ const mysqlPool = mysql.createPool({
 
 
 exports.use = function(req,res, query) {
-    console.log('query: \n'+query);
     mysqlPool.getConnection(function(err,connection){
 
         if (err) {
@@ -26,7 +25,11 @@ exports.use = function(req,res, query) {
         connection.query(query,function(err,rows){
             connection.release();
             if(!err) {
-                res.json(rows);
+                res.json({'code' : 200, 'message' : rows});
+                return;
+            } else {
+                res.json({"code" : 400, "status" : "Error in query"});
+                return;
             }
         });
 
