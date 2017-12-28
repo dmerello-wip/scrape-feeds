@@ -9,7 +9,7 @@ const mysqlPool = mysql.createPool({
     debug    :  false
 });
 
-
+// TODO: non è meglio che ritorni dati e non response Json?
 exports.use = function(req,res, query) {
     mysqlPool.getConnection(function(err,connection){
 
