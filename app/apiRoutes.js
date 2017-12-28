@@ -14,8 +14,9 @@ router.get('/', function(req, res) {
 
 // Suggestions
 router.get('/suggestion/list', suggestion.getAll);
-
 router.post('/suggestion/create', suggestion.create);
+router.post('/suggestion/delete', suggestion.delete);
+
 
 module.exports = router;
 

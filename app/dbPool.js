@@ -1,6 +1,5 @@
 let mysql = require('mysql');
 
-
 const mysqlPool = mysql.createPool({
     connectionLimit : 100,
     host     : 'localhost',
