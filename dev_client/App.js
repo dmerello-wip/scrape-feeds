@@ -4,11 +4,12 @@ import { render } from 'react-dom';
 import { _ } from "lodash";
 
 // Components
-import CrudForm from './CrudForm';
+import FormCreate from './Suggestions/FormCreate';
+import FormUpdate from './Suggestions/FormUpdate';
+import FormRemove from './Suggestions/FormRemove';
 
 // Styles
 import './less/style.less';
-
 
 export default class Suggestions extends Component {
 
@@ -25,7 +26,9 @@ export default class Suggestions extends Component {
         return (
             <div>
                 <h1>Welcome Dude!</h1>
-                <CrudForm />
+                <FormCreate />
+                <FormUpdate />
+                <FormRemove />
             </div>
         );
     }
