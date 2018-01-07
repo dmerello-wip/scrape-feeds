@@ -26,9 +26,9 @@ export default class Suggestions extends Component {
         return (
             <div>
                 <h1>Welcome Dude!</h1>
-                <FormCreate />
-                <FormUpdate />
-                <FormRemove />
+                <FormCreate api="api/suggestion/create" />
+                <FormUpdate api="api/suggestion/update" />
+                <FormRemove api="api/suggestion/delete" />
             </div>
         );
     }

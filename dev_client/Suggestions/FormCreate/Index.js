@@ -10,8 +10,9 @@ export default class CreateSuggestionsForm extends Component {
 
         this.state = {
             actionDone: false,
-            fields : {}
-        }
+            fields: {}
+        };
+        this.api = props.api;
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -29,7 +30,7 @@ export default class CreateSuggestionsForm extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        fetch('/api/suggestion/create', {
+        fetch(this.api, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -38,9 +39,16 @@ export default class CreateSuggestionsForm extends Component {
             body: JSON.stringify(this.state.fields)
         }).then(res => res.json()).then(
             (result) => {
-                this.setState({actionDone: true})
+                this.setState({
+                    actionDone: true,
+                    fields:{}
+                });
+                console.log(result);
             },
             (error) => {
+                this.setState({
+                    actionDone: true
+                });
                 console.log(error)
             }
         );
@@ -51,9 +59,12 @@ export default class CreateSuggestionsForm extends Component {
         return (
             <div>
                 <div className="container">
-                    <h3>test create post</h3>
+                    <h3>Create post</h3>
+                    <div className={this.state.actionDone ? 'alert alert-success' : 'hidden'} >
+                        Ok, done!
+                    </div>
                     <form action="" onSubmit={this.handleSubmit}  method="post" >
-                        <div className={this.state.actionDone ? 'row hidden' : 'row'}>
+                        <div className="row">
                             <div className="col-md-4">
                                 <div className="form-group">
                                     <input type="text" className="form-control" name="image"  placeholder="immagine" onChange={this.handleInputChange} />
@@ -61,15 +72,12 @@ export default class CreateSuggestionsForm extends Component {
                             </div>
                             <div className="col-md-4">
                                 <div className="form-group">
-                                    <textarea className="form-control" name="description" rows="3" placeholder="descrizione" onChange={this.handleInputChange}></textarea>
+                                    <textarea className="form-control" name="description" rows="3" placeholder="descrizione" onChange={this.handleInputChange} />
                                 </div>
                             </div>
                             <div className="col-md-4">
-                                <button type="submit" className="btn btn-block btn-default" >Invia</button>
+                                <button type="submit" className="btn btn-primary" >Invia</button>
                             </div>
-                        </div>
-                        <div className={this.state.actionDone ? 'row' : 'row hidden'}>
-                            ok done!
                         </div>
                     </form>
                 </div>
