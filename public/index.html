@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--[if lt IE 7]>
@@ -11,69 +10,12 @@
 <html class="no-js" lang="it"> <!--<![endif]-->
 <head>
     <title>Suggestion</title>
+    <link href="./css/app.bundle.css" rel="stylesheet"></head>
 </head>
 <body>
 
-<div class="container">
-    <h3>test create post</h3>
-    <form action="api/suggestion/create" method="post">
-        <div class="row row-form-contact-1">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="image"  placeholder="immagine">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <textarea class="form-control" name="description" rows="3" placeholder="descrizione"></textarea>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-block btn-default">Invia</button>
-            </div>
-        </div>
-    </form>
-</div>
-<div class="container">
-    <h3>test remove post</h3>
-    <form action="api/suggestion/delete" method="post">
-        <div class="row row-form-contact-1">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="id"  placeholder="id">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-block btn-default">Invia</button>
-            </div>
-        </div>
-    </form>
-</div>
-<div class="container">
-    <h3>test update post</h3>
-    <form action="api/suggestion/update" method="post">
-        <div class="row row-form-contact-1">
-            <div class="col-md-3">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="id"  placeholder="id">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="image"  placeholder="immagine">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group">
-                    <textarea class="form-control" name="description" rows="3" placeholder="descrizione"></textarea>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-block btn-default">Invia</button>
-            </div>
-        </div>
-    </form>
-</div>
+    <div id="app"></div>
+    <script type="text/javascript" src="./js/app.bundle.js" charset="utf-8"></script>
 
 </body>
 </html>
