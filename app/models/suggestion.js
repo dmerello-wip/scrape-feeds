@@ -1,7 +1,7 @@
 var db = require('../dbPool');
 
 exports.create = function(req,res) {
-    var query = 'INSERT INTO suggestions (`id`, `image`, `description`) VALUES (null, "'+req.body.image+'", "'+req.body.description+'");';
+    var query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+req.body.image+'", "'+req.body.description+'", "'+req.body.title+'");';
     db.use(req, res, query);
 };
 
@@ -16,7 +16,7 @@ exports.get = function(req,res) {
 };
 
 exports.update = function(req,res) {
-    var query = "UPDATE `suggestions` SET `description`= '"+req.body.description+"',`image`= '"+req.body.image+"' WHERE `suggestions`.`id` = "+req.body.id+";";
+    var query = "UPDATE `suggestions` SET `description`= '"+req.body.description+"',`image`= '"+req.body.image+"', `title` = '"+req.body.title+"' WHERE `suggestions`.`id` = "+req.body.id+";";
     db.use(req, res, query);
 };
 

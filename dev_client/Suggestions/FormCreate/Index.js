@@ -40,8 +40,7 @@ export default class CreateSuggestionsForm extends Component {
         }).then(res => res.json()).then(
             (result) => {
                 this.setState({
-                    actionDone: true,
-                    fields:{}
+                    actionDone: true
                 });
                 console.log(result);
             },
@@ -58,29 +57,28 @@ export default class CreateSuggestionsForm extends Component {
     render() {
         return (
             <div>
-                <div className="container">
-                    <h3>Create post</h3>
-                    <div className={this.state.actionDone ? 'alert alert-success' : 'hidden'} >
-                        Ok, done!
-                    </div>
-                    <form action="" onSubmit={this.handleSubmit}  method="post" >
-                        <div className="row">
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <input type="text" className="form-control" name="image"  placeholder="immagine" onChange={this.handleInputChange} />
-                                </div>
+                <h3>Create post</h3>
+                <div className={this.state.actionDone ? 'alert alert-success' : 'hidden'} >
+                    Ok, done!
+                </div>
+                <form action="" onSubmit={this.handleSubmit}  method="post" >
+                    <div className="row">
+                        <div className="col-md-8">
+                            <div className="form-group">
+                                <input type="text" className="form-control" name="title" rows="3" placeholder="titolo" onChange={this.handleInputChange} />
                             </div>
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <textarea className="form-control" name="description" rows="3" placeholder="descrizione" onChange={this.handleInputChange} />
-                                </div>
+                            <div className="form-group">
+                                <textarea className="form-control" name="description" rows="3" placeholder="descrizione" onChange={this.handleInputChange} />
                             </div>
-                            <div className="col-md-4">
-                                <button type="submit" className="btn btn-primary" >Invia</button>
+                            <div className="form-group">
+                                <input type="text" className="form-control" name="image"  placeholder="immagine" onChange={this.handleInputChange} />
                             </div>
                         </div>
-                    </form>
-                </div>
+                        <div className="col-md-4">
+                            <button type="submit" className="btn btn-primary" >Invia</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         );
     }

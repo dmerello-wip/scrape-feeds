@@ -7,9 +7,11 @@ import { _ } from "lodash";
 import FormCreate from './Suggestions/FormCreate';
 import FormUpdate from './Suggestions/FormUpdate';
 import FormRemove from './Suggestions/FormRemove';
+import List from './Suggestions/List';
 
 // Styles
 import './less/style.less';
+
 
 export default class Suggestions extends Component {
 
@@ -24,11 +26,18 @@ export default class Suggestions extends Component {
 
     render() {
         return (
-            <div>
+            <div className="container">
                 <h1>Welcome Dude!</h1>
-                <FormCreate api="api/suggestion/create" />
-                <FormUpdate api="api/suggestion/update" />
-                <FormRemove api="api/suggestion/delete" />
+                <div className="row">
+                    <div className="col-md-6">
+                        <List api="api/suggestion/get"/>
+                    </div>
+                    <div className="col-md-6">
+                        <FormCreate api="api/suggestion/create" />
+                        <FormUpdate api="api/suggestion/update" />
+                        <FormRemove api="api/suggestion/delete" />
+                    </div>
+                </div>
             </div>
         );
     }

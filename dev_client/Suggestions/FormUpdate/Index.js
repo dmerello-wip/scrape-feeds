@@ -5,11 +5,13 @@ import { render } from 'react-dom';
 
 export default class UpdateSuggestionsForm extends Component {
 
+    //TODO: fare un componente notifiche
     constructor(props) {
         super(props);
 
         this.state = {
             actionDone: false,
+            actionError: {},
             fields: {}
         };
         this.api = props.api;
@@ -41,15 +43,15 @@ export default class UpdateSuggestionsForm extends Component {
             (result) => {
                 this.setState({
                     actionDone: true,
-                    fields:{}
+                    fields: {}
                 });
-                console.log(result);
+                console.dir(result);
             },
             (error) => {
                 this.setState({
                     actionDone: true
                 });
-                console.log(error)
+                console.dir(error)
             }
         );
 
@@ -59,34 +61,34 @@ export default class UpdateSuggestionsForm extends Component {
     render() {
         return (
             <div>
-                <div className="container">
-                    <h3>Update post</h3>
-                    <div className={this.state.actionDone ? 'alert alert-success' : 'hidden'} >
-                        Ok, done!
-                    </div>
-                    <form action="" onSubmit={this.handleSubmit} method="post">
-                        <div className="row row-form-contact-1">
-                            <div className="col-md-3">
-                                <div className="form-group">
-                                    <input type="text" className="form-control" name="id"  placeholder="id" onChange={this.handleInputChange}/>
-                                </div>
+                <h3>Update post</h3>
+                <div className={this.state.actionDone ? 'alert alert-success' : 'hidden'}>
+                    Ok, done!
+                </div>
+                <form action="" onSubmit={this.handleSubmit} method="post">
+                    <div className="row">
+                        <div className="col-md-8">
+                            <div className="form-group">
+                                <input type="text" className="form-control" name="id" placeholder="id"
+                                       onChange={this.handleInputChange}/>
                             </div>
-                            <div className="col-md-3">
-                                <div className="form-group">
-                                    <input type="text" className="form-control" name="image"  placeholder="immagine" onChange={this.handleInputChange}/>
-                                </div>
+                            <div className="form-group">
+                                <input type="text" className="form-control" name="title" rows="3" placeholder="titolo" onChange={this.handleInputChange} />
                             </div>
-                            <div className="col-md-3">
-                                <div className="form-group">
-                                    <textarea className="form-control" name="description" rows="3" placeholder="descrizione"onChange={this.handleInputChange} />
-                                </div>
+                            <div className="form-group">
+                                <textarea className="form-control" name="description" rows="3" placeholder="descrizione"
+                                          onChange={this.handleInputChange}/>
                             </div>
-                            <div className="col-md-3">
-                                <button type="submit" className="btn btn-primary">Invia</button>
+                            <div className="form-group">
+                                <input type="text" className="form-control" name="image" placeholder="immagine"
+                                       onChange={this.handleInputChange}/>
                             </div>
                         </div>
-                    </form>
-                </div>
+                        <div className="col-md-4">
+                            <button type="submit" className="btn btn-primary">Invia</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         );
     }

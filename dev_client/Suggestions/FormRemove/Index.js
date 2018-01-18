@@ -40,7 +40,7 @@ export default class RemoveSuggestionsForm extends Component {
             (result) => {
                 this.setState({
                     actionDone: true,
-                    fields:{}
+                    fields: {}
                 });
                 console.log(result);
             },
@@ -58,24 +58,23 @@ export default class RemoveSuggestionsForm extends Component {
     render() {
         return (
             <div>
-                <div className="container">
-                    <h3>Remove post</h3>
-                    <div className={this.state.actionDone ? 'alert alert-success' : 'hidden'} >
-                        Ok, done!
-                    </div>
-                    <form action="api/suggestion/delete" onSubmit={this.handleSubmit} method="post">
-                        <div className="row">
-                            <div className="col-md-4">
-                                <div className="form-group">
-                                    <input type="text" className="form-control" name="id"  placeholder="id" onChange={this.handleInputChange} />
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <button type="submit" className="btn btn-primary">Invia</button>
+                <h3>Remove post</h3>
+                <div className={this.state.actionDone ? 'alert alert-success' : 'hidden'}>
+                    Ok, done!
+                </div>
+                <form action="api/suggestion/delete" onSubmit={this.handleSubmit} method="post">
+                    <div className="row">
+                        <div className="col-md-8">
+                            <div className="form-group">
+                                <input type="text" className="form-control" name="id" placeholder="id"
+                                       onChange={this.handleInputChange}/>
                             </div>
                         </div>
-                    </form>
-                </div>
+                        <div className="col-md-4">
+                            <button type="submit" className="btn btn-primary">Invia</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         );
     }
