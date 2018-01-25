@@ -21,16 +21,18 @@ import Dashboard from "./Suggestions/Dashboard";
 // Styles
 import './less/style.less';
 
-const BasicExample = () => (
+const App = () => (
     <Router>
         <div>
-            <ul>
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/list">List</Link></li>
-                <li><Link to="/create">Create</Link></li>
-            </ul>
-
-            <hr/>
+            <header>
+                <nav>
+                    <ul>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/list">List</Link></li>
+                        <li><Link to="/create">Create</Link></li>
+                    </ul>
+                </nav>
+            </header>
 
             <Route exact path="/" component={Dashboard}/>
             <Route path="/create" component={FormCreate}/>
@@ -38,8 +40,8 @@ const BasicExample = () => (
         </div>
     </Router>
 )
-export default BasicExample;
+
 
 
 // render(<Dashboard />, document.getElementById('app'));
-render(<BasicExample />, document.getElementById('app'));
+render(<App />, document.getElementById('app'));
