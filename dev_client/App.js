@@ -18,9 +18,6 @@ export default class Suggestions extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            dbPending : false
-        };
 
         this.events = events;
         this.api = api;
@@ -38,10 +35,10 @@ export default class Suggestions extends Component {
                 <h1>ciao</h1>
                 <div className="row">
                     <div className="col-md-6">
-                        <List api={this.api.get} updateEventName={events.contentUpdate.label}/>
+                        <List/>
                     </div>
                     <div className="col-md-6">
-                        <FormCreate api={this.api.create} updateEvent={events.contentUpdate.event}/>
+                        <FormCreate />
                     </div>
                 </div>
             </div>

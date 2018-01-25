@@ -2,6 +2,9 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 
+// Data
+import {events, api} from '../../globals';
+
 
 export default class CreateSuggestionsForm extends Component {
 
@@ -11,7 +14,11 @@ export default class CreateSuggestionsForm extends Component {
         this.state = {
             fields: {}
         };
-        this.api = props.api;
+
+
+        this.updateEvent = events.contentUpdate.event;
+        this.api = api.create;
+
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -38,7 +45,7 @@ export default class CreateSuggestionsForm extends Component {
             body: JSON.stringify(this.state.fields)
         }).then(res => res.json()).then(
             (result) => {
-                window.dispatchEvent(this.props.updateEvent);
+                window.dispatchEvent(this.updateEvent);
             },
             (error) => {
                 console.log(error);

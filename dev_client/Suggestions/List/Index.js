@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Article from '../Article';
 
+// Data
+import {events, api} from '../../globals';
 
 export default class List extends Component {
     //TODO: update the list once a new entry is created
@@ -13,7 +15,9 @@ export default class List extends Component {
         this.state = {
             items : []
         };
-        window.addEventListener(this.props.updateEventName, () => this.fetchContents());
+        this.updateEvent = events.contentUpdate.label;
+        this.api = api.get;
+        window.addEventListener(this.updateEvent, () => this.fetchContents());
     }
 
     componentDidMount() {
@@ -21,7 +25,7 @@ export default class List extends Component {
     }
 
     fetchContents() {
-        const jsonUrl = this.props.api;
+        const jsonUrl = this.api;
 
         if (jsonUrl === undefined) {
             throw new Error('api not responding to react app');
