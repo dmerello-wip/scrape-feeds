@@ -1,12 +1,12 @@
-// Javascript
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { _ } from "lodash";
 
+// Data
+import {events, api} from './globals';
+
 // Components
 import FormCreate from './Suggestions/FormCreate';
-import FormUpdate from './Suggestions/FormUpdate';
-import FormRemove from './Suggestions/FormRemove';
 import List from './Suggestions/List';
 
 // Styles
@@ -22,20 +22,9 @@ export default class Suggestions extends Component {
             dbPending : false
         };
 
-        this.apiBaseUrl = 'api/suggestion';
-        this.api = {
-            create  : this.apiBaseUrl + '/create',
-            update  : this.apiBaseUrl + '/update',
-            delete  : this.apiBaseUrl + '/delete',
-            get     : this.apiBaseUrl + '/get'
-        }
+        this.events = events;
+        this.api = api;
 
-        this.events = {
-            contentUpdate: {
-                label : 'contentUpdate',
-                event : new CustomEvent('contentUpdate')
-            }
-        }
     }
 
     componentDidMount() {
@@ -49,12 +38,10 @@ export default class Suggestions extends Component {
                 <h1>ciao</h1>
                 <div className="row">
                     <div className="col-md-6">
-                        <List api={this.api.get} updateEventName={this.events.contentUpdate.label}/>
+                        <List api={this.api.get} updateEventName={events.contentUpdate.label}/>
                     </div>
                     <div className="col-md-6">
-                        <FormCreate api={this.api.create} updateEvent={this.events.contentUpdate.event}/>
-                        <FormUpdate api={this.api.update} updateEvent={this.events.contentUpdate.event}/>
-                        <FormRemove api={this.api.delete} updateEvent={this.events.contentUpdate.event}/>
+                        <FormCreate api={this.api.create} updateEvent={events.contentUpdate.event}/>
                     </div>
                 </div>
             </div>

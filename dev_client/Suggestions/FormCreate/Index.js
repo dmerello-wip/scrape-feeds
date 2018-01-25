@@ -9,7 +9,6 @@ export default class CreateSuggestionsForm extends Component {
         super(props);
 
         this.state = {
-            actionDone: false,
             fields: {}
         };
         this.api = props.api;
@@ -39,15 +38,9 @@ export default class CreateSuggestionsForm extends Component {
             body: JSON.stringify(this.state.fields)
         }).then(res => res.json()).then(
             (result) => {
-                this.setState({
-                    actionDone: true
-                });
                 window.dispatchEvent(this.props.updateEvent);
             },
             (error) => {
-                this.setState({
-                    actionDone: true
-                });
                 console.log(error);
             }
         );
@@ -59,9 +52,6 @@ export default class CreateSuggestionsForm extends Component {
         return (
             <div>
                 <h3>Create post</h3>
-                <div className={this.state.actionDone ? 'alert alert-success' : 'hidden'} >
-                    Ok, done!
-                </div>
                 <form action="" onSubmit={this.handleSubmit}  method="post" >
                     <div className="row">
                         <div className="col-md-8">

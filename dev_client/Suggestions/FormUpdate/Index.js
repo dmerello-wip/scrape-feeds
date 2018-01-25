@@ -1,6 +1,8 @@
-// Javascript
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+
+// Data
+import {events, api} from '../../globals';
 
 
 export default class UpdateSuggestionsForm extends Component {
@@ -10,11 +12,14 @@ export default class UpdateSuggestionsForm extends Component {
         super(props);
 
         this.state = {
-            actionDone: false,
-            actionError: {},
-            fields: {}
+            fields: {
+                id : this.props.itemId
+            }
         };
-        this.api = props.api;
+
+        this.updateEvent = events.contentUpdate.event;
+        this.api = api.update;
+
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -46,7 +51,7 @@ export default class UpdateSuggestionsForm extends Component {
                     fields: {}
                 });
                 console.dir(result);
-                window.dispatchEvent(this.props.updateEvent);
+                window.dispatchEvent(this.updateEvent);
             },
             (error) => {
                 this.setState({
@@ -63,16 +68,9 @@ export default class UpdateSuggestionsForm extends Component {
         return (
             <div>
                 <h3>Update post</h3>
-                <div className={this.state.actionDone ? 'alert alert-success' : 'hidden'}>
-                    Ok, done!
-                </div>
                 <form action="" onSubmit={this.handleSubmit} method="post">
                     <div className="row">
                         <div className="col-md-8">
-                            <div className="form-group">
-                                <input type="text" className="form-control" name="id" placeholder="id"
-                                       onChange={this.handleInputChange}/>
-                            </div>
                             <div className="form-group">
                                 <input type="text" className="form-control" name="title" rows="3" placeholder="titolo" onChange={this.handleInputChange} />
                             </div>
