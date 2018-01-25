@@ -46,6 +46,7 @@ export default class UpdateSuggestionsForm extends Component {
                     fields: {}
                 });
                 console.dir(result);
+                window.dispatchEvent(this.props.updateEvent);
             },
             (error) => {
                 this.setState({

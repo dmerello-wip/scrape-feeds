@@ -43,6 +43,7 @@ export default class RemoveSuggestionsForm extends Component {
                     fields: {}
                 });
                 console.log(result);
+                window.dispatchEvent(this.props.updateEvent);
             },
             (error) => {
                 this.setState({

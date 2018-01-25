@@ -18,24 +18,43 @@ export default class Suggestions extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {}
+        this.state = {
+            dbPending : false
+        };
+
+        this.apiBaseUrl = 'api/suggestion';
+        this.api = {
+            create  : this.apiBaseUrl + '/create',
+            update  : this.apiBaseUrl + '/update',
+            delete  : this.apiBaseUrl + '/delete',
+            get     : this.apiBaseUrl + '/get'
+        }
+
+        this.events = {
+            contentUpdate: {
+                label : 'contentUpdate',
+                event : new CustomEvent('contentUpdate')
+            }
+        }
     }
 
     componentDidMount() {
+
     }
+
 
     render() {
         return (
             <div className="container">
-                <h1>Welcome Dude!</h1>
+                <h1>ciao</h1>
                 <div className="row">
                     <div className="col-md-6">
-                        <List api="api/suggestion/get"/>
+                        <List api={this.api.get} updateEventName={this.events.contentUpdate.label}/>
                     </div>
                     <div className="col-md-6">
-                        <FormCreate api="api/suggestion/create" />
-                        <FormUpdate api="api/suggestion/update" />
-                        <FormRemove api="api/suggestion/delete" />
+                        <FormCreate api={this.api.create} updateEvent={this.events.contentUpdate.event}/>
+                        <FormUpdate api={this.api.update} updateEvent={this.events.contentUpdate.event}/>
+                        <FormRemove api={this.api.delete} updateEvent={this.events.contentUpdate.event}/>
                     </div>
                 </div>
             </div>

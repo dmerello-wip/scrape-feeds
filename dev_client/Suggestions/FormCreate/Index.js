@@ -42,17 +42,18 @@ export default class CreateSuggestionsForm extends Component {
                 this.setState({
                     actionDone: true
                 });
-                console.log(result);
+                window.dispatchEvent(this.props.updateEvent);
             },
             (error) => {
                 this.setState({
                     actionDone: true
                 });
-                console.log(error)
+                console.log(error);
             }
         );
 
     }
+
 
     render() {
         return (

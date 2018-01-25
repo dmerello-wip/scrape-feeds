@@ -13,9 +13,14 @@ export default class List extends Component {
         this.state = {
             items : []
         };
+        window.addEventListener(this.props.updateEventName, () => this.fetchContents());
     }
 
     componentDidMount() {
+        this.fetchContents();
+    }
+
+    fetchContents() {
         const jsonUrl = this.props.api;
 
         if (jsonUrl === undefined) {
@@ -25,10 +30,10 @@ export default class List extends Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                   this.setState({
+                    this.setState({
                         items: result.message
-                   });
-                   console.dir(this.state.items);
+                    });
+                    //console.dir(this.state.items);
                 },
                 (error) => {console.log(error)}
             );
