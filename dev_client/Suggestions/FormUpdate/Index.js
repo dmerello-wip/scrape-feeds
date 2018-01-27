@@ -68,7 +68,7 @@ export default class UpdateSuggestionsForm extends Component {
         return (
             <div>
                 <h3>Update post</h3>
-                <form action="" onSubmit={this.handleSubmit} method="post">
+                <form action="" onSubmit={this.handleSubmit} method="post" encType="multipart/form-data" >
                     <div className="row">
                         <div className="col-md-8">
                             <div className="form-group">

@@ -28,48 +28,61 @@ export default class CreateSuggestionsForm extends Component {
 
     handleInputChange(event) {
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
+        let value;
+        switch(event.target.type) {
+            case 'file':
+                value = target.files[0];
+                break;
+            case 'checkbox':
+                value = target.checked;
+                break;
+            default:
+                value = target.value;
+        }
         this.state.fields[name] = value;
     }
 
 
     handleSubmit(e) {
         e.preventDefault();
-        fetch(this.api, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(this.state.fields)
-        }).then(res => res.json()).then(
-            (result) => {
-                window.dispatchEvent(this.updateEvent);
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
+        const data = new FormData()
+        const values = this.state.fields;
+        for (const key in values) {
+            data.append(key, values[key]);
+        }
 
+        fetch(this.api, {
+                method: 'POST',
+                body: data
+            })
+            .then(res => res.json())
+            .then(data => {
+                // TODO: invece che un evento farsi dire dal response che callback fare:
+                window.dispatchEvent(this.updateEvent);
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
 
-    render() {
+
+render() {
         return (
             <div>
                 <h3>Create post</h3>
-                <form action="" onSubmit={this.handleSubmit}  method="post" >
+                <form action="" onSubmit={this.handleSubmit}  method="post" encType="multipart/form-data" >
                     <div className="row">
                         <div className="col-md-8">
+                            <div className="form-group">
+                                <input type="file" className="form-control" name="image"  onChange={this.handleInputChange} />
+                            </div>
                             <div className="form-group">
                                 <input type="text" className="form-control" name="title" rows="3" placeholder="titolo" onChange={this.handleInputChange} />
                             </div>
                             <div className="form-group">
                                 <textarea className="form-control" name="description" rows="3" placeholder="descrizione" onChange={this.handleInputChange} />
-                            </div>
-                            <div className="form-group">
-                                <input type="text" className="form-control" name="image"  placeholder="immagine" onChange={this.handleInputChange} />
                             </div>
                         </div>
                         <div className="col-md-4">
