@@ -1,7 +1,7 @@
 var db = require('../dbPool');
 
 exports.create = function(req,res) {
-    var query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+req.file.image+'", "'+req.body.description+'", "'+req.body.title+'");';
+    var query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+req.file.path+'", "'+req.body.description+'", "'+req.body.title+'");';
     db.use(req, res, query);
 };
 

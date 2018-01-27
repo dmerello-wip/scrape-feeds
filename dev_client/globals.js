@@ -9,7 +9,7 @@ const events = {
 
 const baseUrl = 'api/suggestion';
 const api = {
-        create  : '/test',
+        create  : baseUrl + '/create',
         update  : baseUrl + '/update',
         delete  : baseUrl + '/delete',
         get     : baseUrl + '/get'
