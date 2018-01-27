@@ -27,7 +27,6 @@ export default class Dashboard extends Component {
     render() {
         return (
             <div className="container">
-                <h1>ciao</h1>
                 <div className="row">
                     <div className="col-md-6">
                         <List/>

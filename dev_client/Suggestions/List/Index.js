@@ -48,7 +48,6 @@ export default class List extends Component {
         const items = this.state.items;
         return (
             <div>
-                <h3>Suggestions List</h3>
                 {items.map((item) =>
                     <Article key={item.id} contents={item} />
                 )}

@@ -12,12 +12,13 @@ export default class CreateSuggestionsForm extends Component {
         super(props);
 
         this.state = {
-            fields: {}
+            fields: {
+                id : (this.props.itemId) ? this.props.itemId : null
+            }
         };
 
-
         this.updateEvent = events.contentUpdate.event;
-        this.api = api.create;
+        this.api = (this.props.itemId) ? api.update : api.create;
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,20 +59,16 @@ export default class CreateSuggestionsForm extends Component {
             })
             .then(res => res.json())
             .then(data => {
-                // TODO: invece che un evento farsi dire dal response che callback fare:
                 window.dispatchEvent(this.updateEvent);
             })
             .catch(error => {
                 console.log(error);
-            })
+            });
     }
 
-
-
-render() {
+    render() {
         return (
             <div>
-                <h3>Create post</h3>
                 <form action="" onSubmit={this.handleSubmit}  method="post" encType="multipart/form-data" >
                     <div className="row">
                         <div className="col-md-8">

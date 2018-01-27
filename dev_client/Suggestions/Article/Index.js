@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 
 
-import FormUpdate from '../FormUpdate';
+import FormCreate from '../FormCreate';
 
 // Data
 import {events, api} from '../../globals';
@@ -29,22 +29,22 @@ export default class Article extends Component {
     }
 
     remove(e){
+
+        e.preventDefault();
+        const data = new FormData()
+        data.append('id', this.props.contents.id);
+        console.log(data.entries());
         fetch(this.api, {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({id : this.props.contents.id})
-        }).then(res => res.json()).then(
-            (result) => {
-                console.log(result);
+            body: data
+        })
+            .then(res => res.json())
+            .then(data => {
                 window.dispatchEvent(this.updateEvent);
-            },
-            (error) => {
-                console.log(error)
-            }
-        );
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     toggleEdit(){
@@ -58,7 +58,7 @@ export default class Article extends Component {
         const removingClass = (this.state.removed) ? 'hidden' : '';
         let updaterDom;
         if(this.state.editMode) {
-            updaterDom = <FormUpdate itemId={contents.id} />;
+            updaterDom = <FormCreate itemId={contents.id} />;
         } else {
             updaterDom = '';
         }

@@ -6,7 +6,6 @@ const events = {
     }
 };
 
-
 const baseUrl = 'api/suggestion';
 const api = {
         create  : baseUrl + '/create',
