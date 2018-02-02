@@ -94,6 +94,11 @@ export default class CreateSuggestionsForm extends Component {
 
     render() {
         let image = this.state.previewImage;
+        let dropZoneStyle= {
+            backgroundSize: 'cover',
+            backgroundImage: "url(" + image + ")"
+        };
+
         return (
             <div>
                 <form action="" onSubmit={this.handleSubmit}  method="post" encType="multipart/form-data" >
@@ -104,10 +109,9 @@ export default class CreateSuggestionsForm extends Component {
                                 <input type="text" className="form-control" name="title"  onChange={this.handleInputChange} />
                             </div>
                             <div className="form-group">
-                                <div className="drop-zone">
+                                <div className="drop-zone" style={dropZoneStyle}>
                                     <FileDrop frame={document} onDrop={this.handleFileDrop}></FileDrop>
                                 </div>
-                                <img src={image} />
                             </div>
                             <div className="form-group">
                                 <textarea className="form-control" name="description" rows="3" placeholder="descrizione" onChange={this.handleInputChange} />
