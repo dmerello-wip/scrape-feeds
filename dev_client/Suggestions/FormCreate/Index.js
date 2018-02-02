@@ -38,6 +38,7 @@ export default class CreateSuggestionsForm extends Component {
         let value;
         switch(event.target.type) {
             case 'file':
+                // input file (alternative to file drop)
                 value = target.files[0];
                 break;
             case 'checkbox':
@@ -52,17 +53,21 @@ export default class CreateSuggestionsForm extends Component {
     handleFileDrop(files, event) {
         // limit to one file:
         let file    = event.dataTransfer.files[0];
+        // get it for db
+        this.setState({
+            fields: {
+                image : file
+            }
+        });
+        // render it in preview
         let reader = new FileReader();
-        //attach event handlers here...
         reader.readAsDataURL(file);
         reader.onload = this.fileLoaded;
     }
 
     fileLoaded(e){
         this.setState({
-            fields: {
-                image : e.target.result
-            }
+            previewImage : e.target.result
         });
     }
 
@@ -88,7 +93,7 @@ export default class CreateSuggestionsForm extends Component {
     }
 
     render() {
-        let image = this.state.fields.image;
+        let image = this.state.previewImage;
         return (
             <div>
                 <form action="" onSubmit={this.handleSubmit}  method="post" encType="multipart/form-data" >
