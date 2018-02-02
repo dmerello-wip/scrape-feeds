@@ -12,10 +12,6 @@ import {
 // Components
 import FormCreate from './Suggestions/FormCreate';
 import List from './Suggestions/List';
-
-
-//import { Router, Route, IndexRoute, IndexLink, Link, hashHistory } from 'react-router';
-
 import Dashboard from "./Suggestions/Dashboard";
 
 // Styles
@@ -23,7 +19,7 @@ import './less/style.less';
 
 const App = () => (
     <Router>
-        <div>
+        <div className="app-wrapper">
             <header>
                 <nav>
                     <ul>

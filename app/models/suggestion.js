@@ -2,8 +2,9 @@ const db = require('../dbPool');
 const appConfig = require('../config.js');
 
 exports.create = function(req,res) {
-    const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+appConfig.paths.uploads+'/'+req.file.filename+'", "'+req.body.description+'", "'+req.body.title+'");';
-    db.use(req, res, query);
+    console.dir(req.body);
+    /*const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+appConfig.paths.uploads+'/'+req.file.filename+'", "'+req.body.description+'", "'+req.body.title+'");';
+    db.use(req, res, query);*/
 };
 
 exports.list = function(req,res) {

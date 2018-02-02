@@ -1,9 +1,12 @@
 // Javascript
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import FileDrop from 'react-file-drop';
 
 // Data
 import {events, api} from '../../globals';
+
+// Styles
 
 
 export default class CreateSuggestionsForm extends Component {
@@ -22,6 +25,8 @@ export default class CreateSuggestionsForm extends Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFileDrop = this.handleFileDrop.bind(this);
+        this.fileLoaded = this.fileLoaded.bind(this);
     }
 
     componentDidMount() {
@@ -44,6 +49,22 @@ export default class CreateSuggestionsForm extends Component {
         this.state.fields[name] = value;
     }
 
+    handleFileDrop(files, event) {
+        // limit to one file:
+        let file    = event.dataTransfer.files[0];
+        let reader = new FileReader();
+        //attach event handlers here...
+        reader.readAsDataURL(file);
+        reader.onload = this.fileLoaded;
+    }
+
+    fileLoaded(e){
+        this.setState({
+            fields: {
+                image : e.target.result
+            }
+        });
+    }
 
     handleSubmit(e) {
         e.preventDefault();
@@ -67,16 +88,21 @@ export default class CreateSuggestionsForm extends Component {
     }
 
     render() {
+        let image = this.state.fields.image;
         return (
             <div>
                 <form action="" onSubmit={this.handleSubmit}  method="post" encType="multipart/form-data" >
                     <div className="row">
                         <div className="col-md-8">
                             <div className="form-group">
-                                <input type="file" className="form-control" name="image"  onChange={this.handleInputChange} />
+                                <label>Title</label>
+                                <input type="text" className="form-control" name="title"  onChange={this.handleInputChange} />
                             </div>
                             <div className="form-group">
-                                <input type="text" className="form-control" name="title" rows="3" placeholder="titolo" onChange={this.handleInputChange} />
+                                <div className="drop-zone">
+                                    <FileDrop frame={document} onDrop={this.handleFileDrop}></FileDrop>
+                                </div>
+                                <img src={image} />
                             </div>
                             <div className="form-group">
                                 <textarea className="form-control" name="description" rows="3" placeholder="descrizione" onChange={this.handleInputChange} />
