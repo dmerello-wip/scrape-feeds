@@ -15,9 +15,7 @@ export default class List extends Component {
         this.state = {
             items : []
         };
-        this.updateEvent = events.contentUpdate.label;
         this.api = api.get;
-        window.addEventListener(this.updateEvent, () => this.fetchContents());
     }
 
     componentDidMount() {

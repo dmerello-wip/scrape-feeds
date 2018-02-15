@@ -1,11 +1,3 @@
-
-const events = {
-    contentUpdate: {
-        label : 'contentUpdate',
-        event : new CustomEvent('contentUpdate')
-    }
-};
-
 const baseUrl = 'api/suggestion';
 const api = {
         create  : baseUrl + '/create',
@@ -14,7 +6,4 @@ const api = {
         get     : baseUrl + '/get'
     };
 
-
-
-
-export {events, api};
+export {api};

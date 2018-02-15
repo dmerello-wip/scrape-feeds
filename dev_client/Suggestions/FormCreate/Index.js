@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import FileDrop from 'react-file-drop';
-
+import { Redirect } from 'react-router-dom';
 // Data
-import {events, api} from '../../globals';
+import { api, events } from '../../globals';
 
 // Styles
 
@@ -15,13 +15,11 @@ export default class CreateSuggestionsForm extends Component {
         super(props);
 
         this.state = {
-            fields: {
-                id : (this.props.itemId) ? this.props.itemId : null
-            }
+            previewImage: 'images/draghere.jpg',
+            fields: {},
+            saved: false
         };
 
-        this.updateEvent = events.contentUpdate.event;
-        this.api = (this.props.itemId) ? api.update : api.create;
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,13 +28,22 @@ export default class CreateSuggestionsForm extends Component {
     }
 
     componentDidMount() {
+        // check if there's a Link component sending a state:
+        const ingoingState = this.props.location.state;
+        if(ingoingState){
+            this.state.fields.id = ingoingState.itemId;
+            this.api = api.update;
+        } else {
+            this.api = api.create;
+        }
+        // TODO: put saved data if we are in update case
     }
 
     handleInputChange(event) {
         const target = event.target;
         const name = target.name;
         let value;
-        switch(event.target.type) {
+        switch (event.target.type) {
             case 'file':
                 // input file (alternative to file drop)
                 value = target.files[0];
@@ -52,78 +59,80 @@ export default class CreateSuggestionsForm extends Component {
 
     handleFileDrop(files, event) {
         // limit to one file:
-        let file    = event.dataTransfer.files[0];
+        let file = event.dataTransfer.files[0];
         // get it for db
-        this.setState({
-            fields: {
-                image : file
-            }
-        });
+        this.state.fields.image = file;
         // render it in preview
         let reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = this.fileLoaded;
     }
 
-    fileLoaded(e){
+    fileLoaded(e) {
         this.setState({
-            previewImage : e.target.result
+            previewImage: e.target.result
         });
     }
 
     handleSubmit(e) {
         e.preventDefault();
-        const data = new FormData()
+        const data = new FormData();
         const values = this.state.fields;
         for (const key in values) {
             data.append(key, values[key]);
         }
 
         fetch(this.api, {
-                method: 'POST',
-                body: data
-            })
+            method: 'POST',
+            body: data
+        })
             .then(res => res.json())
             .then(data => {
-                window.dispatchEvent(this.updateEvent);
+                this.setState({ saved: true });
             })
             .catch(error => {
                 console.log(error);
             });
     }
 
+
     render() {
         let image = this.state.previewImage;
-        let dropZoneStyle= {
+        let dropZoneStyle = {
             backgroundSize: 'cover',
             backgroundImage: "url(" + image + ")"
         };
-
-        return (
-            <div>
-                <form action="" onSubmit={this.handleSubmit}  method="post" encType="multipart/form-data" >
-                    <div className="row">
-                        <div className="col-md-8">
-                            <div className="form-group">
-                                <label>Title</label>
-                                <input type="text" className="form-control" name="title"  onChange={this.handleInputChange} />
-                            </div>
-                            <div className="form-group">
-                                <div className="drop-zone" style={dropZoneStyle}>
-                                    <FileDrop frame={document} onDrop={this.handleFileDrop}></FileDrop>
+        if (this.state.saved) {
+            return <Redirect to='/list'/>;
+        } else {
+            return (
+                <div>
+                    <form action="" onSubmit={this.handleSubmit} method="post" encType="multipart/form-data">
+                        <div className="row">
+                            <div className="col-md-8">
+                                <div className="form-group">
+                                    <label>Title</label>
+                                    <input type="text" className="form-control" name="title"
+                                           onChange={this.handleInputChange}/>
+                                </div>
+                                <div className="form-group">
+                                    <div className="drop-zone" style={dropZoneStyle}>
+                                        <FileDrop frame={document} onDrop={this.handleFileDrop} />
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <textarea className="form-control" name="description" rows="3"
+                                              placeholder="descrizione" onChange={this.handleInputChange}/>
                                 </div>
                             </div>
-                            <div className="form-group">
-                                <textarea className="form-control" name="description" rows="3" placeholder="descrizione" onChange={this.handleInputChange} />
+                            <div className="col-md-4">
+                                <button type="submit" className="btn btn-primary">Invia</button>
                             </div>
                         </div>
-                        <div className="col-md-4">
-                            <button type="submit" className="btn btn-primary" >Invia</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        );
+                    </form>
+                </div>
+            );
+        }
     }
 }
 
