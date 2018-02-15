@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { _ } from 'lodash';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Link, Route } from 'react-router-dom';
 // Components
 import FormCreate from './Suggestions/FormCreate';
 import List from './Suggestions/List';
@@ -22,6 +22,7 @@ const App = () => (
             <div className="container">
                 <Route path="/create" component={FormCreate}/>
                 <Route exact path="/list" component={List}/>
+                <Redirect to="/list" />
             </div>
         </div>
     </Router>

@@ -61,7 +61,7 @@ export default class Article extends Component {
                             {/*<Link to="/create" className="btn" params={{ itemId: contents.id }}>edit</Link>*/}
                             <Link to={{
                                 pathname: '/create',
-                                state: { itemId: contents.id }
+                                state: { itemContents: contents }
                             }} className="btn" >edit</Link>
                         </div>
                     </div>

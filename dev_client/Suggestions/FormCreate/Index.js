@@ -31,12 +31,14 @@ export default class CreateSuggestionsForm extends Component {
         // check if there's a Link component sending a state:
         const ingoingState = this.props.location.state;
         if(ingoingState){
-            this.state.fields.id = ingoingState.itemId;
+            this.setState({
+                previewImage: ingoingState.itemContents.image,
+                fields: ingoingState.itemContents
+            });
             this.api = api.update;
         } else {
             this.api = api.create;
         }
-        // TODO: put saved data if we are in update case
     }
 
     handleInputChange(event) {
@@ -98,6 +100,7 @@ export default class CreateSuggestionsForm extends Component {
 
     render() {
         let image = this.state.previewImage;
+        let contents = this.state.fields;
         let dropZoneStyle = {
             backgroundSize: 'cover',
             backgroundImage: "url(" + image + ")"
@@ -113,7 +116,7 @@ export default class CreateSuggestionsForm extends Component {
                                 <div className="form-group">
                                     <label>Title</label>
                                     <input type="text" className="form-control" name="title"
-                                           onChange={this.handleInputChange}/>
+                                           onChange={this.handleInputChange} placeholder={contents.title}/>
                                 </div>
                                 <div className="form-group">
                                     <div className="drop-zone" style={dropZoneStyle}>
@@ -122,7 +125,7 @@ export default class CreateSuggestionsForm extends Component {
                                 </div>
                                 <div className="form-group">
                                     <textarea className="form-control" name="description" rows="3"
-                                              placeholder="descrizione" onChange={this.handleInputChange}/>
+                                              placeholder={contents.description} onChange={this.handleInputChange} />
                                 </div>
                             </div>
                             <div className="col-md-4">
