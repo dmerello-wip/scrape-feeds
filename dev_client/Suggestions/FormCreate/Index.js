@@ -5,6 +5,7 @@ import FileDrop from 'react-file-drop';
 import { Redirect } from 'react-router-dom';
 // Data
 import { api, events } from '../../globals';
+import { WithContext as ReactTags } from 'react-tag-input';
 
 // Styles
 
@@ -17,7 +18,9 @@ export default class CreateSuggestionsForm extends Component {
         this.state = {
             previewImage: 'images/draghere.jpg',
             fields: {},
-            saved: false
+            saved: false,
+            tags: [{ id: 1, text: "Thailand" }, { id: 2, text: "India" }],
+            tagSuggest: ['USA', 'Germany', 'Austria', 'Costa Rica', 'Sri Lanka', 'Thailand']
         };
 
 
@@ -25,6 +28,10 @@ export default class CreateSuggestionsForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFileDrop = this.handleFileDrop.bind(this);
         this.fileLoaded = this.fileLoaded.bind(this);
+
+        this.handleTagDelete = this.handleTagDelete.bind(this);
+        this.handleTagAddition = this.handleTagAddition.bind(this);
+        this.handleTagDrag = this.handleTagDrag.bind(this);
     }
 
     componentDidMount() {
@@ -39,6 +46,32 @@ export default class CreateSuggestionsForm extends Component {
         } else {
             this.api = api.create;
         }
+    }
+
+    handleTagDelete(i) {
+        let tags = this.state.tags;
+        tags.splice(i, 1);
+        this.setState({tags: tags});
+    }
+
+    handleTagAddition(tag) {
+        let tags = this.state.tags;
+        tags.push({
+            id: tags.length + 1,
+            text: tag
+        });
+        this.setState({tags: tags});
+    }
+
+    handleTagDrag(tag, currPos, newPos) {
+        let tags = this.state.tags;
+
+        // mutate array
+        tags.splice(currPos, 1);
+        tags.splice(newPos, 0, tag);
+
+        // re-render
+        this.setState({ tags: tags });
     }
 
     handleInputChange(event) {
@@ -101,6 +134,7 @@ export default class CreateSuggestionsForm extends Component {
     render() {
         let image = this.state.previewImage;
         let contents = this.state.fields;
+        const { tags, tagSuggest } = this.state;
         let dropZoneStyle = {
             backgroundSize: 'cover',
             backgroundImage: "url(" + image + ")"
@@ -123,6 +157,11 @@ export default class CreateSuggestionsForm extends Component {
                                         <FileDrop frame={document} onDrop={this.handleFileDrop} />
                                     </div>
                                 </div>
+                                <ReactTags tags={tags}
+                                           suggestions={tagSuggest}
+                                           handleDelete={this.handleTagDelete}
+                                           handleAddition={this.handleTagAddition}
+                                           handleDrag={this.handleTagDrag} />
                                 <div className="form-group">
                                     <textarea className="form-control" name="description" rows="3"
                                               placeholder={contents.description} onChange={this.handleInputChange} />
