@@ -1,8 +1,8 @@
 const db = require('../dbPool');
 const appConfig = require('../config.js');
 
-exports.create = function(req,res, data) {
-    const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+appConfig.paths.uploads+'/'+data.file+'", "'+data.description+'", "'+data.title+'");';
+exports.create = function(req,res) {
+    const query = 'INSERT INTO tags (`id`, `name`) VALUES (null, "'+req.body.name+'");';
     db.query(query, null, function (data, error) {
         if(!error) {
             res.json({'code' : 200, 'message' : data});
@@ -13,7 +13,7 @@ exports.create = function(req,res, data) {
 };
 
 exports.list = function(req,res) {
-    const query = 'SELECT * FROM `suggestions`.`suggestions`;';
+    const query = 'SELECT * FROM `suggestions`.`tags`;';
     db.query(query, null, function (data, error) {
         if(!error) {
             res.json({'code' : 200, 'message' : data});
@@ -24,7 +24,7 @@ exports.list = function(req,res) {
 };
 
 exports.get = function(req,res) {
-    const query = 'SELECT * FROM `suggestions` WHERE `suggestions`.`id` = '+req.params.id+';';
+    const query = 'SELECT * FROM `tags` WHERE `tags`.`id` = '+req.params.id+';';
     db.query(query, null, function (data, error) {
         if(!error) {
             res.json({'code' : 200, 'message' : data});
@@ -34,9 +34,8 @@ exports.get = function(req,res) {
     });
 };
 
-exports.update = function(req,res, data) {
-    console.log('model update with id: '+data.id);
-    const query = "UPDATE `suggestions` SET `description`= '"+data.description+"',`image`= '"+appConfig.paths.uploads+'/'+data.file+"', `title` = '"+data.title+"' WHERE `suggestions`.`id` = "+data.id+";";
+exports.update = function(req,res) {
+    const query = "UPDATE `tags` SET `name`= '"+req.body.name+"' WHERE `tags`.`id` = "+req.body.id+";";
     db.query(query, null, function (data, error) {
         if(!error) {
             res.json({'code' : 200, 'message' : data});
@@ -47,7 +46,7 @@ exports.update = function(req,res, data) {
 };
 
 exports.delete = function(req,res) {
-    const query = 'DELETE FROM `suggestions` WHERE `suggestions`.`id` = '+req.body.id+';';
+    const query = 'DELETE FROM `tags` WHERE `tags`.`id` = '+req.body.id+';';
     db.query(query, null, function (data, error) {
         if(!error) {
             res.json({'code' : 200, 'message' : data});

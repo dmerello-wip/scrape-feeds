@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 
-var mysqlPool = mysql.createPool({
+var pool = mysql.createPool({
     connectionLimit : 100,
     host     : 'localhost',
     user     : 'root',
@@ -9,34 +9,38 @@ var mysqlPool = mysql.createPool({
     debug    :  false
 });
 
-// TODO: non è meglio che ritorni dati e non response Json?
-exports.use = function(req,res, query) {
-    mysqlPool.getConnection(function(err,connection){
+var DB = (function () {
 
-        if (err) {
-            connection.release();
-            res.json({"code" : 100, "status" : "Error in connection database"});
-            return;
-        }
-
-        console.log('mysql connection as id ' + connection.threadId);
-
-        connection.query(query,function(err,rows){
-            connection.release();
-            if(!err) {
-                res.json({'code' : 200, 'message' : rows});
-                return;
-            } else {
-                res.json({"code" : 400, "status" : "Error in query"});
-                return;
+    function _query(query, params, callback) {
+        pool.getConnection(function (err, connection) {
+            if (err) {
+                connection.release();
+                callback(null, err);
+                throw err;
             }
+
+            connection.query(query, params, function (err, rows) {
+                connection.release();
+                if (!err) {
+                    callback(rows);
+                }
+                else {
+                    callback(null, err);
+                }
+
+            });
+
+            connection.on('error', function (err) {
+                connection.release();
+                callback(null, err);
+                throw err;
+            });
         });
+    };
 
-        connection.on('error', function(err) {
-            res.json({"code" : 100, "status" : "Error in connection database"});
-            return;
-        });
-    });
-}
+    return {
+        query: _query
+    };
+})();
 
-
+module.exports = DB;

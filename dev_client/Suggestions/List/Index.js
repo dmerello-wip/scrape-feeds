@@ -15,7 +15,7 @@ export default class List extends Component {
         this.state = {
             items : []
         };
-        this.api = api.get;
+        this.api = api.suggestion.get;
     }
 
     componentDidMount() {

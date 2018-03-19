@@ -15,7 +15,7 @@ export default class Article extends Component {
         }
 
         this.remove = this.remove.bind(this);
-        this.api = api.delete;
+        this.api = api.suggestion.delete;
     }
 
     componentDidMount() {

@@ -19,9 +19,11 @@ export default class CreateSuggestionsForm extends Component {
             previewImage: 'images/draghere.jpg',
             fields: {},
             saved: false,
-            tags: [{ id: 1, text: "Thailand" }, { id: 2, text: "India" }],
-            tagSuggest: ['USA', 'Germany', 'Austria', 'Costa Rica', 'Sri Lanka', 'Thailand']
+            tags: [],
+            tagSuggest: []
         };
+        // tags: [{ id: 1, text: "Thailand" }],
+        // tagSuggest: ['USA']
 
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -35,17 +37,27 @@ export default class CreateSuggestionsForm extends Component {
     }
 
     componentDidMount() {
-        // check if there's a Link component sending a state:
-        const ingoingState = this.props.location.state;
-        if(ingoingState){
-            this.setState({
-                previewImage: ingoingState.itemContents.image,
-                fields: ingoingState.itemContents
+        this.checkIfEditOrCreate();
+        this.getSuggestedTags();
+    }
+
+    getSuggestedTags() {
+        fetch(api.tag.get , {
+            method: 'GET'
+        })
+            .then(res => res.json())
+            .then(data => {
+                let suggested = [];
+                for (const key in data.message) {
+                    suggested.push(data.message[key].name);
+                }
+                this.setState({
+                    tagSuggest: suggested
+                });
+            })
+            .catch(error => {
+                console.log(error);
             });
-            this.api = api.update;
-        } else {
-            this.api = api.create;
-        }
     }
 
     handleTagDelete(i) {
@@ -72,6 +84,21 @@ export default class CreateSuggestionsForm extends Component {
 
         // re-render
         this.setState({ tags: tags });
+    }
+
+    checkIfEditOrCreate(){
+        const ingoingState = this.props.location.state;
+        if(ingoingState){
+            this.setState({
+                previewImage: ingoingState.itemContents.image,
+                fields: ingoingState.itemContents
+            });
+            //set the correct api to call
+            this.api = api.suggestion.update;
+        } else {
+            //set the correct api to call
+            this.api = api.suggestion.create;
+        }
     }
 
     handleInputChange(event) {
@@ -112,10 +139,16 @@ export default class CreateSuggestionsForm extends Component {
     handleSubmit(e) {
         e.preventDefault();
         const data = new FormData();
-        const values = this.state.fields;
-        for (const key in values) {
-            data.append(key, values[key]);
+        const fieldsValues = this.state.fields;
+        const tagsValues = this.state.tags;
+        const tagsToPost = [];
+        for (const key in fieldsValues) {
+            data.append(key, fieldsValues[key]);
         }
+        for (const key in tagsValues) {
+            tagsToPost.push(tagsValues[key].text);
+        }
+        data.append('tags',tagsToPost);
 
         fetch(this.api, {
             method: 'POST',
