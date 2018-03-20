@@ -1,8 +1,16 @@
 const db = require('../dbPool');
 const appConfig = require('../config.js');
+const tag = require('./../models/tag');
 
 exports.create = function(req,res, data) {
     const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+appConfig.paths.uploads+'/'+data.file+'", "'+data.description+'", "'+data.title+'");';
+/*
+    let tagIds = [];
+    for (const key in data.tags) {
+        tagIds.push(tag.getIdOrCreateFromName(data.tags[key]));
+    }
+    console.dir(tagIds);
+*/
     db.query(query, null, function (data, error) {
         if(!error) {
             res.json({'code' : 200, 'message' : data});
@@ -11,6 +19,7 @@ exports.create = function(req,res, data) {
         }
     });
 };
+
 
 exports.list = function(req,res) {
     const query = 'SELECT * FROM `suggestions`.`suggestions`;';

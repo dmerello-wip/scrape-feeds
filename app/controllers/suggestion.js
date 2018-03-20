@@ -6,7 +6,7 @@ exports.createSuggestion = function(req, res) {
         title : req.body.title,
         description : req.body.description,
         file : req.file.filename,
-        tags : req.tags
+\        tags : req.body.tags
     });
 };
 
