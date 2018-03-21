@@ -27,7 +27,6 @@ var DB = (function () {
                 else {
                     callback(null, err);
                 }
-
             });
 
             connection.on('error', function (err) {

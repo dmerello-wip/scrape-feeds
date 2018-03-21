@@ -4,13 +4,20 @@ const appConfig = require('../config.js');
 
 class Suggestion {
 
-    constructor(){
-        console.log('Suggestion Model Class');
-    }
-
     create(data, callback) {
         const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+appConfig.paths.uploads+'/'+data.file+'", "'+data.description+'", "'+data.title+'");';
 
+        db.query(query, null, function (data, error) {
+            if(!error) {
+                callback(true, data);
+            } else {
+                callback(false, error);
+            }
+        });
+    };
+
+    relateToTag(id, idTag, callback){
+        const query = 'INSERT INTO suggestions_tags (`id`, `suggestion`, `tag`) VALUES (null, "'+id+'", "'+idTag+'");';
         db.query(query, null, function (data, error) {
             if(!error) {
                 callback(true, data);

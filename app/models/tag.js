@@ -2,19 +2,15 @@ const db = require('../dbPool');
 
 class Tag {
 
-    getTagsId(tagsArray){
-        for (const key in tagsArray) {
-            console.log(tagsArray[key].name);
-        }
-    };
 
-    create(req,res) {
-        const query = 'INSERT INTO tags (`id`, `name`) VALUES (null, "'+req.body.name+'");';
+
+    create(tagName, callback) {
+        const query = 'INSERT INTO tags (`id`, `name`) VALUES (null, "'+tagName+'"); ';
         db.query(query, null, function (data, error) {
             if(!error) {
-                res.json({'code' : 200, 'message' : data});
+                callback(true, data);
             } else {
-                res.json({'code' : 400, 'message' : error});
+                callback(false, error);
             }
         });
     };
