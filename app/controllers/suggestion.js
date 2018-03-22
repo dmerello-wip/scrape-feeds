@@ -19,13 +19,12 @@ exports.createSuggestion = function(req, res) {
         if(!status) {
             res.json({'code' : 400, 'message' : msg});
         } else {
-            console.dir(msg);
             let id = (msg.insertId);
             console.log(`created Suggestion id: ${id}`);
             for(let tag of tags){
-                tagMdl.create(tag, function(status, msg){
+                tagMdl.create(tag, function(status, msgTagCreation){
                     if (status) {
-                        suggestionMdl.relateToTag(id, msg.insertId, function(status, msg){
+                        suggestionMdl.relateToTag(id, msgTagCreation.insertId, function(status, msg){
                             if (!status) {
                                 res.json({'code' : 400, 'message' : msg});
                             }
