@@ -20,12 +20,12 @@ class Tag {
         db.query(q_checkTag, null, function (data, error) {
             if(!error) {
                 if(data[0]===undefined){
+                    // create a new tag and get id
                     this.create(tagName, function(status, msg){
-                        console.log('getTagId nuovo:'+msg.insertId);
                         callback(msg.insertId);
                     });
                 }else {
-                    console.log('getTagId esistente:'+data[0].id);
+                    // create an existend tag id
                     callback(data[0].id);
                 }
             } else {
