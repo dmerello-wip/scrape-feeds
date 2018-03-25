@@ -11,20 +11,19 @@ exports.createSuggestion = function(req, res) {
     };
     let tags = req.body.tags.split(',');
 
-    // TODO: insertID NON è l'id inserito, ma l'id di transazione mysql
-    // trovare il modo di farti tornare l'id inserito
 
     // create
+    // TODO: rendere leggibili sti annidamenti dividendo
     suggestionMdl.create( postData , function(status, msg){
         if(!status) {
             res.json({'code' : 400, 'message' : msg});
         } else {
             let id = (msg.insertId);
             console.log(`created Suggestion id: ${id}`);
-            for(let tag of tags){
-                tagMdl.create(tag, function(status, msgTagCreation){
+            for(let tagName of tags){
+                tagMdl.getTagId(tagName, function(tagId){
                     if (status) {
-                        suggestionMdl.relateToTag(id, msgTagCreation.insertId, function(status, msg){
+                        suggestionMdl.relateToTag(id, tagId, function(status, msg){
                             if (!status) {
                                 res.json({'code' : 400, 'message' : msg});
                             }

@@ -15,6 +15,26 @@ class Tag {
         });
     };
 
+    getTagId(tagName, callback) {
+        const q_checkTag = 'SELECT * FROM `tags` WHERE `tags`.`name` = "'+tagName+'";';
+        db.query(q_checkTag, null, function (data, error) {
+            if(!error) {
+                if(data[0]===undefined){
+                    this.create(tagName, function(status, msg){
+                        console.log('getTagId nuovo:'+msg.insertId);
+                        callback(msg.insertId);
+                    });
+                }else {
+                    console.log('getTagId esistente:'+data[0].id);
+                    callback(data[0].id);
+                }
+            } else {
+                console.log('Tag Model - getTagId: Query error');
+            }
+        }.bind(this));
+    };
+
+
     list(req,res) {
         const query = 'SELECT * FROM `suggestions`.`tags`;';
         db.query(query, null, function (data, error) {
