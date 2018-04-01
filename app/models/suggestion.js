@@ -1,8 +1,33 @@
-const db = require('../dbPool');
+const db = require('../helpers/dbPool');
 const appConfig = require('../config.js');
 
 
 class Suggestion {
+
+    config(){
+        return [
+                {
+                    name : 'id',
+                    type : 'int'
+                },
+                {
+                    name: 'title',
+                    type: 'shortText'
+                },
+                {
+                    name: 'description',
+                    type: 'longText'
+                },
+                {
+                    name: 'file',
+                    type: 'image'
+                },
+                {
+                    name: 'url',
+                    type: 'url'
+                }
+            ];
+    }
 
     create(data, callback) {
         const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+appConfig.paths.uploads+'/'+data.file+'", "'+data.description+'", "'+data.title+'");';

@@ -1,6 +1,7 @@
 const appConfig = require('../config.js');
 const suggestionMdl = require('./../models/suggestion');
 const tagMdl = require('./../models/tag');
+const Validator = require('./../helpers/validator');
 
 exports.createSuggestion = function(req, res) {
     // data to post:
@@ -10,6 +11,11 @@ exports.createSuggestion = function(req, res) {
         file : req.file.filename
     };
     let tags = req.body.tags.split(',');
+
+    // Validate Suggestions data
+    let validation = new Validator(postData, suggestionMdl.config());
+    console.log(validation.messages);
+    // TODO: validate tags data
 
 
     // create

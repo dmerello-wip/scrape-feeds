@@ -1,4 +1,4 @@
-const db = require('../dbPool');
+const db = require('../helpers/dbPool');
 
 class Tag {
 
