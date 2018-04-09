@@ -29,7 +29,7 @@ class Suggestion {
             ];
     }
 
-    create(data, callback) {
+/*    create(data, callback) {
         const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+appConfig.paths.uploads+'/'+data.file+'", "'+data.description+'", "'+data.title+'");';
 
         db.query(query, null, function (data, error) {
@@ -39,16 +39,22 @@ class Suggestion {
                 callback(false, error);
             }
         });
+    };*/
+    create(data) {
+        return new Promise( (resolve, reject) => {
+            const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+appConfig.paths.uploads+'/'+data.file+'", "'+data.description+'", "'+data.title+'");';
+            db.query(query, null, (data, error) => {
+                (!error) ? resolve(data) : reject(error);
+            });
+        });
     };
 
     relateToTag(id, idTag, callback){
-        const query = 'INSERT INTO suggestions_tags (`id`, `suggestion`, `tag`) VALUES (null, "'+id+'", "'+idTag+'");';
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                callback(true, data);
-            } else {
-                callback(false, error);
-            }
+        return new Promise( (resolve, reject) => {
+            const query = 'INSERT INTO suggestions_tags (`id`, `suggestion`, `tag`) VALUES (null, "' + id + '", "' + idTag + '");';
+            db.query(query, null, function (data, error) {
+                (!error) ? resolve(data) : reject(error);
+            });
         });
     };
 

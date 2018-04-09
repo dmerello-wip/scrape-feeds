@@ -21,29 +21,26 @@ class SuggestionCtrl {
 
 
         // create
-        // TODO: rendere leggibili sti annidamenti dividendo
-        suggestionMdl.create(postData, function (status, msg) {
-            if (!status) {
-                res.json({ 'code': 400, 'message': msg });
-            } else {
-                let id = (msg.insertId);
+        suggestionMdl.create(postData)
+            .then( (suggestionData) => {
+                let id = (suggestionData.insertId);
                 console.log(`created Suggestion id: ${id}`);
                 for (let tagName of tags) {
-                    tagMdl.getTagId(tagName, function (tagId) {
-                        if (status) {
-                            suggestionMdl.relateToTag(id, tagId, function (status, msg) {
-                                if (!status) {
+                    tagMdl.getTagId(tagName)
+                        .then( (tagId) => {
+                            suggestionMdl.relateToTag(id, tagId)
+                                .catch((msg)=>{
                                     res.json({ 'code': 400, 'message': msg });
-                                }
-                            });
-                        } else {
-                            res.json({ 'code': 400, 'message': msg });
-                        }
-                    });
+                                })
+                        })
+                        .catch( (getTagIdError) => {
+                            res.json({ 'code': 400, 'message': getTagIdError });
+                        });
                 }
-                res.json({ 'code': 200, 'message': msg });
-            }
-        });
+                res.json({ 'code': 200, 'message': suggestionData });
+            }).catch( (message) => {
+                res.json({ 'code': 400, 'message': message });
+            });
 
     };
 
