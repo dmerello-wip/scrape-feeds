@@ -14,13 +14,14 @@ class SuggestionCtrl {
         };
         let tags = req.body.tags.split(',');
 
+        // TODO: validate tags data
         // TODO: Validate Suggestions data
         // let validation = new Validator(postData, suggestionMdl.config());
         // console.log(validation.messages);
-        // TODO: validate tags data
+
+        // TODO: verificare il this nel costruttore e splittare la relazione ai tag in altro metodo
 
         // create my Suggestion article
-        // TODO: creare una createAndRelate nel model, nn qui
         suggestionMdl.create(postData)
             .then((suggestionData) => {
                 let id = (suggestionData.insertId);
