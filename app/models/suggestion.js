@@ -1,5 +1,6 @@
 const db = require('../helpers/dbPool');
 const appConfig = require('../config.js');
+const tagMdl = require('./tag');
 
 
 class Suggestion {
@@ -47,6 +48,31 @@ class Suggestion {
             });
         });
     };
+
+    createAndRelateToTag(postData, tags){
+        return new Promise((resolve, reject) =>{
+            this.create(postData).then((suggestionData)=>{
+                let id = (suggestionData.insertId);
+                console.log(`created Suggestion id: ${id}`);
+
+                // cycle tags and retrieve tag Id
+                for (let tagName of tags) {
+                    tagMdl.getTagId(tagName)
+                        .then((tagId) => {
+                            // relate Suggestion to each Tag
+                            this.relateToTag(id, tagId)
+                                .catch((msg) => {
+                                    res.json({ 'code': 400, 'message': msg });
+                                })
+                        })
+                        .catch((getTagIdError) => {
+                            res.json({ 'code': 400, 'message': getTagIdError });
+                        });
+                }
+                resolve(suggestionData);
+            });
+        });
+    }
 
     getAll(req,res) {
         return new Promise((resolve, reject) => {

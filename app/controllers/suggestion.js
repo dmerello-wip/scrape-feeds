@@ -19,35 +19,14 @@ class SuggestionCtrl {
         // let validation = new Validator(postData, suggestionMdl.config());
         // console.log(validation.messages);
 
-        // TODO: verificare il this nel costruttore e splittare la relazione ai tag in altro metodo
-
-        // create my Suggestion article
-        suggestionMdl.create(postData)
+        // create my Suggestion article and join tags
+        suggestionMdl.createAndRelateToTag(postData, tags)
             .then((suggestionData) => {
-                let id = (suggestionData.insertId);
-                console.log(`created Suggestion id: ${id}`);
-
-                // cycle tags and retrieve tag Id
-                for (let tagName of tags) {
-                    tagMdl.getTagId(tagName)
-                        .then((tagId) => {
-                            // relate Suggestion to each Tag
-                            suggestionMdl.relateToTag(id, tagId)
-                                .catch((msg) => {
-                                    res.json({ 'code': 400, 'message': msg });
-                                })
-                        })
-                        .catch((getTagIdError) => {
-                            res.json({ 'code': 400, 'message': getTagIdError });
-                        });
-                }
-                // Done!
                 res.json({ 'code': 200, 'message': suggestionData });
             })
             .catch((message) => {
                 res.json({ 'code': 400, 'message': message });
             });
-
     };
 
     update(req, res) {
