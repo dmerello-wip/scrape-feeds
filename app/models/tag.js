@@ -39,50 +39,15 @@ class Tag {
     };
 
 
-    list(req,res) {
-        const query = 'SELECT * FROM `suggestions`.`tags`;';
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                res.json({'code' : 200, 'message' : data});
-            } else {
-                res.json({'code' : 400, 'message' : error});
-            }
+    getAll() {
+        return new Promise((resolve, reject)=>{
+            const query = 'SELECT * FROM `suggestions`.`tags`;';
+            db.query(query, null, function (data, error) {
+                (!error) ? resolve(data) : reject(error);
+            });
         });
     };
 
-    get(req,res) {
-        const query = 'SELECT * FROM `tags` WHERE `tags`.`id` = '+req.params.id+';';
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                res.json({'code' : 200, 'message' : data});
-            } else {
-                res.json({'code' : 400, 'message' : error});
-            }
-        });
-    };
-
-
-    update(req,res) {
-        const query = "UPDATE `tags` SET `name`= '"+req.body.name+"' WHERE `tags`.`id` = "+req.body.id+";";
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                res.json({'code' : 200, 'message' : data});
-            } else {
-                res.json({'code' : 400, 'message' : error});
-            }
-        });
-    };
-
-    delete(req,res) {
-        const query = 'DELETE FROM `tags` WHERE `tags`.`id` = '+req.body.id+';';
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                res.json({'code' : 200, 'message' : data});
-            } else {
-                res.json({'code' : 400, 'message' : error});
-            }
-        });
-    };
 }
 
 
