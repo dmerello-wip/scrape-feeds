@@ -3,8 +3,8 @@ import { render } from 'react-dom';
 import { _ } from 'lodash';
 import { BrowserRouter as Router, Redirect, Link, Route } from 'react-router-dom';
 // Components
-import FormCreate from './Suggestions/FormCreate';
-import List from './Suggestions/List';
+import FormCreate from './Suggestions/FormCreate/Index.js';
+import List from './Suggestions/List/Index.js';
 // Styles
 import './less/style.less';
 
@@ -26,7 +26,7 @@ const App = () => (
             </div>
         </div>
     </Router>
-)
+);
 
 
 // render(<Dashboard />, document.getElementById('app'));
