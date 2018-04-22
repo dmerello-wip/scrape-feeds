@@ -29,74 +29,68 @@ class Suggestion {
             ];
     }
 
-    create(data, callback) {
+    getMandatories(){
+        return {
+            create : ['title', 'description'],
+            update : ['id', 'title', 'description'],
+            delete : ['id']
+        };
+    }
+
+    create(data) {
         const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "'+appConfig.paths.uploads+'/'+data.file+'", "'+data.description+'", "'+data.title+'");';
-
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                callback(true, data);
-            } else {
-                callback(false, error);
-            }
+        return new Promise((resolve, reject)=>{
+            db.query(query, null, function (data, error) {
+                (!error) ? resolve(data) : reject(error) ;
+            });
         });
-    };
+    }
 
-    relateToTag(id, idTag, callback){
+    relateToTag(id, idTag){
         const query = 'INSERT INTO suggestions_tags (`id`, `suggestion`, `tag`) VALUES (null, "'+id+'", "'+idTag+'");';
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                callback(true, data);
-            } else {
-                callback(false, error);
-            }
+        return new Promise((resolve, reject)=>{
+            db.query(query, null, function (data, error) {
+                (!error) ? resolve(data) : reject(error) ;
+            });
         });
-    };
+    }
 
-    list(req,res) {
+    list() {
         const query = 'SELECT * FROM `suggestions`.`suggestions`;';
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                res.json({'code' : 200, 'message' : data});
-            } else {
-                res.json({'code' : 400, 'message' : error});
-            }
+        return new Promise((resolve, reject)=>{
+            db.query(query, null, function (data, error) {
+                (!error) ? resolve(data) : reject(error) ;
+            });
         });
-    };
+    }
 
-    get(req,res) {
-        const query = 'SELECT * FROM `suggestions` WHERE `suggestions`.`id` = '+req.params.id+';';
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                res.json({'code' : 200, 'message' : data});
-            } else {
-                res.json({'code' : 400, 'message' : error});
-            }
+    get(id) {
+        const query = 'SELECT * FROM `suggestions` WHERE `suggestions`.`id` = '+id+';';
+        return new Promise((resolve, reject)=>{
+            db.query(query, null, function (data, error) {
+                (!error) ? resolve(data) : reject(error) ;
+            });
         });
-    };
+    }
 
-    update(req,res, data) {
+    update(data) {
         console.log('model update with id: '+data.id);
         const query = "UPDATE `suggestions` SET `description`= '"+data.description+"',`image`= '"+appConfig.paths.uploads+'/'+data.file+"', `title` = '"+data.title+"' WHERE `suggestions`.`id` = "+data.id+";";
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                res.json({'code' : 200, 'message' : data});
-            } else {
-                res.json({'code' : 400, 'message' : error});
-            }
+        return new Promise((resolve, reject)=>{
+            db.query(query, null, function (data, error) {
+                (!error) ? resolve(data) : reject(error) ;
+            });
         });
-    };
+    }
 
-    delete(req,res) {
-        const query = 'DELETE FROM `suggestions` WHERE `suggestions`.`id` = '+req.body.id+';';
-        db.query(query, null, function (data, error) {
-            if(!error) {
-                res.json({'code' : 200, 'message' : data});
-            } else {
-                res.json({'code' : 400, 'message' : error});
-            }
+    delete(id) {
+        const query = 'DELETE FROM `suggestions` WHERE `suggestions`.`id` = '+id+';';
+        return new Promise((resolve, reject)=>{
+            db.query(query, null, function (data, error) {
+                (!error) ? resolve(data) : reject(error) ;
+            });
         });
-    };
-
+    }
 
 }
 

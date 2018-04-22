@@ -15,6 +15,7 @@ class Validator {
         return this.validate();
     }
 
+    /*
     validate(){
         console.dir(this.data);
         console.dir(this.structure);
@@ -62,6 +63,7 @@ class Validator {
 
         return this.response;
     }
+    */
 
     checkInt(value){
         return Number.isInteger(value);

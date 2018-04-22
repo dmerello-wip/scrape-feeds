@@ -1,7 +1,7 @@
 // Javascript
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Article from '../Article';
+import Article from '../Article/Index.js';
 
 // Data
 import {events, api} from '../../globals';
