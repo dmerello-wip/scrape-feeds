@@ -49,27 +49,44 @@ class Suggestion {
         });
     };
 
+    updateTags(id, tags) {
+        // cycle tags and retrieve tag Id
+        for (let tagName of tags) {
+            tagMdl.getTagId(tagName)
+                .then((tagId) => {
+                    // relate Suggestion to each Tag
+                    this.relateToTag(id, tagId)
+                        .catch((msg) => {
+                            res.json({ 'code': 400, 'message': msg });
+                        })
+                })
+                .catch((getTagIdError) => {
+                    res.json({ 'code': 400, 'message': getTagIdError });
+                });
+        }
+    }
+
     createAndRelateToTag(postData, tags){
         return new Promise((resolve, reject) =>{
             this.create(postData).then((suggestionData)=>{
                 let id = (suggestionData.insertId);
                 console.log(`created Suggestion id: ${id}`);
-
-                // cycle tags and retrieve tag Id
-                for (let tagName of tags) {
-                    tagMdl.getTagId(tagName)
-                        .then((tagId) => {
-                            // relate Suggestion to each Tag
-                            this.relateToTag(id, tagId)
-                                .catch((msg) => {
-                                    res.json({ 'code': 400, 'message': msg });
-                                })
-                        })
-                        .catch((getTagIdError) => {
-                            res.json({ 'code': 400, 'message': getTagIdError });
-                        });
-                }
+                this.updateTags(id, tags);
                 resolve(suggestionData);
+            });
+        });
+    }
+
+    updateAndRelateToTag(postData, tags){
+        return new Promise((resolve, reject) =>{
+            this.update(postData).then(() => {
+                console.log(`update Suggestion id: ${postData.id}`);
+                this.removeAllTags(postData.id).then(()=>{
+                    this.updateTags(postData.id, tags);
+                    resolve(postData);
+                });
+            }).catch((error) => {
+                reject(error);
             });
         });
     }
@@ -105,6 +122,15 @@ class Suggestion {
         return new Promise((resolve, reject) => {
             const query = 'DELETE FROM `suggestions` WHERE `suggestions`.`id` = '+id+';';
             db.query(query, null, (data, error) => {
+                (!error) ? resolve(data) : reject(error);
+            });
+        });
+    };
+
+    removeAllTags(id) {
+        return new Promise((resolve, reject) => {
+            const query = "DELETE FROM `suggestions_tags` WHERE `suggestion` = '"+ id +"'";
+            db.query(query, null, function (data, error) {
                 (!error) ? resolve(data) : reject(error);
             });
         });

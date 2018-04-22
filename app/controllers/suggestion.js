@@ -30,16 +30,21 @@ class SuggestionCtrl {
     };
 
     update(req, res) {
-        suggestionMdl.update({
+        let postData = {
             id: req.body.id,
             title: req.body.title,
             description: req.body.description,
             file: req.file.filename
-        }).then((suggestionData) => {
-            res.json({ 'code': 200, 'message': suggestionData });
-        }).catch((error) => {
-            res.json({ 'code': 400, 'message': error });
-        });
+        };
+        let tags = req.body.tags.split(',');
+        // update my Suggestion article, and related tags
+        suggestionMdl.updateAndRelateToTag(postData, tags)
+            .then((suggestionData) => {
+                res.json({ 'code': 200, 'message': suggestionData });
+            })
+            .catch((message) => {
+                res.json({ 'code': 400, 'message': message });
+            });
     };
 
     delete(req, res) {
