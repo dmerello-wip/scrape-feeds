@@ -1,5 +1,4 @@
-const suggestionMdl = require('./../models/suggestion');
-const tagMdl = require('./../models/tag');
+const SuggestionMdl = require('./../models/suggestion');
 const Validator = require('./../helpers/validator');
 
 
@@ -10,23 +9,25 @@ class SuggestionCtrl {
         let postData = {
             title: req.body.title,
             description: req.body.description,
-            file: req.file.filename
+            file: (req.file) ? req.file.filename : undefined
         };
         let tags = req.body.tags.split(',');
 
         // TODO: validate tags data
         // TODO: Validate Suggestions data
-        // let validation = new Validator(postData, suggestionMdl.config());
-        // console.log(validation.messages);
-
-        // create my Suggestion article and join tags
-        suggestionMdl.createAndRelateToTag(postData, tags)
-            .then((suggestionData) => {
-                res.json({ 'code': 200, 'message': suggestionData });
-            })
-            .catch((message) => {
-                res.json({ 'code': 400, 'message': message });
-            });
+        new Validator(postData, SuggestionMdl.config, SuggestionMdl.mandatories.create)
+            .then(() => {
+                // create my Suggestion article and join tags
+                SuggestionMdl.createAndRelateToTag(postData, tags)
+                    .then((suggestionData) => {
+                        res.json({ 'code': 200, 'message': suggestionData });
+                    })
+                    .catch((message) => {
+                        res.json({ 'code': 400, 'message': message });
+                    });
+            }).catch(() => {
+            console.log('validazione andata male');
+        });
     };
 
     update(req, res) {
@@ -38,40 +39,40 @@ class SuggestionCtrl {
         };
         let tags = req.body.tags.split(',');
         // update my Suggestion article, and related tags
-        suggestionMdl.updateAndRelateToTag(postData, tags)
+        SuggestionMdl.updateAndRelateToTag(postData, tags)
             .then((suggestionData) => {
-                res.json({ 'code': 200, 'message': suggestionData });
+                res.json({'code': 200, 'message': suggestionData});
             })
             .catch((message) => {
-                res.json({ 'code': 400, 'message': message });
+                res.json({'code': 400, 'message': message});
             });
     };
 
     delete(req, res) {
-        suggestionMdl.delete(req.body.id)
+        SuggestionMdl.delete(req.body.id)
             .then((suggestionData) => {
-                res.json({ 'code': 200, 'message': suggestionData });
+                res.json({'code': 200, 'message': suggestionData});
             }).catch((error) => {
-            res.json({ 'code': 400, 'message': error });
+            res.json({'code': 400, 'message': error});
         });
     };
 
     get(req, res) {
         if (req.params.id) {
-            suggestionMdl.get(req.params.id)
+            SuggestionMdl.get(req.params.id)
                 .then((suggestionData) => {
-                    res.json({ 'code': 200, 'message': suggestionData });
+                    res.json({'code': 200, 'message': suggestionData});
                 })
                 .catch((error) => {
-                    res.json({ 'code': 400, 'message': error });
+                    res.json({'code': 400, 'message': error});
                 });
         } else {
-            suggestionMdl.getAll()
+            SuggestionMdl.getAll()
                 .then((data) => {
-                    res.json({ 'code': 200, 'message': data });
+                    res.json({'code': 200, 'message': data});
                 })
                 .catch((error) => {
-                    res.json({ 'code': 400, 'message': error });
+                    res.json({'code': 400, 'message': error});
                 });
         }
     };
