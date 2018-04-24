@@ -20,15 +20,15 @@ class SuggestionCtrl {
                 // create my Suggestion article and join tags
                 SuggestionMdl.createAndRelateToTag(postData, tags)
                     .then((suggestionData) => {
-                        res.json({ 'code': 200, 'message': suggestionData });
+                        res.json({'code': 200, 'message': suggestionData});
                     })
                     .catch((message) => {
-                        res.json({ 'code': 400, 'message': message });
+                        res.json({'code': 400, 'message': message});
                     });
-            }).catch(() => {
-            console.log('validazione andata male');
+            }).catch((errorResponse) => {
+            console.dir(errorResponse);
         });
-    };
+    }
 
     update(req, res) {
         let postData = {
@@ -46,7 +46,7 @@ class SuggestionCtrl {
             .catch((message) => {
                 res.json({'code': 400, 'message': message});
             });
-    };
+    }
 
     delete(req, res) {
         SuggestionMdl.delete(req.body.id)
@@ -55,7 +55,7 @@ class SuggestionCtrl {
             }).catch((error) => {
             res.json({'code': 400, 'message': error});
         });
-    };
+    }
 
     get(req, res) {
         if (req.params.id) {
@@ -75,7 +75,7 @@ class SuggestionCtrl {
                     res.json({'code': 400, 'message': error});
                 });
         }
-    };
+    }
 
 
 }

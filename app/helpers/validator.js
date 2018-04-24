@@ -12,85 +12,80 @@ class Validator {
             success: false,
             messages: []
         };
+        this.checks = [];
 
-       /* console.dir(this.data);
+        /*
+        console.log('dati: ');
+        console.dir(this.data);
+        console.log('struttura: ');
         console.dir(this.structure);
-        console.dir(this.mandatories);*/
+        console.log('obbligatori: ');
+        console.dir(this.mandatories);
+        */
+        this.validate();
 
         return new Promise((resolve, reject) => {
-            this.validate();
-            reject('to be implemented');
+
+            Promise.all(this.checks).then(values => {
+                this.response.messages = values;
+                reject(this.response.messages);
+            }).catch(error =>{
+                reject('devo finirlo');
+            });
+
         });
     }
 
 
     validate() {
-        for (let key of this.structure) {
+        for (let field of this.structure) {
             // cycle the model structure
-            // check for each type the post object key
-            let fieldName = key['name'];
-            let typeToCheck = key['type'];
+            // check for each type the post object field
+            let fieldName = field['name'];
+            let typeToCheck = field['type'];
             let fieldValue = this.data[fieldName];
             let mandatory = this.mandatories.includes(fieldName);
             if (mandatory) {
                 if (!this.data[fieldName]) {
-                    console.log(`> ${fieldName} is mandatory`);
-                    this.response.messages.push(`${fieldName} is mandatory`);
+                    // mandatory, not evalued
+                    this.checks.push( Promise.resolve({[fieldName] : 'mandatory not respected'}) );
                 } else {
-                    this.checkType(typeToCheck, fieldValue, fieldName).then(()=>{
-                        console.dir(this.response.messages);
-                    });
+                    // mandatory, evalued, check type
+                    let check = this.checkType(typeToCheck, fieldValue, fieldName);
+                    this.checks.push( check );
                 }
             } else {
                 if (this.data[fieldName]) {
-                    this.checkType(typeToCheck, fieldValue, fieldName).then(() => {
-                        console.dir(this.response.messages);
-                    });
+                    // not mandatory, check type
+                    let check = this.checkType(typeToCheck, fieldValue, fieldName);
+                    this.checks.push( check );
+                } else {
+                    // not mandatory, not evalued
+                    this.checks.push( Promise.resolve({[fieldName] : `check not necessary`}) );
                 }
             }
         }
+
     }
 
     checkType(type, value, name){
-        return new Promise((resolve, reject) => {
-            console.log('> checking type: ' + type);
-            console.log('  checking field: ' + name);
-            console.log('  checking value: ' + value);
-            switch (type) {
-                case 'int':
-                    this.response.messages.push({
-                        [name]: this.checkInt(value)
-                    });
-                    resolve();
-                    break;
-                case 'shortText':
-                    this.response.messages.push({
-                        [name]: this.checkString(value)
-                    });
-                    resolve();
-                    break;
-                case 'longText':
-                    this.response.messages.push({
-                        [name]: this.checkString(value)
-                    });
-                    resolve();
-                    break;
-                case 'image':
-                    // TODO: questa promise non arriva al return
-                    this.checkImage(value)
-                        .then(function (result) {
-                            console.log('check su immagine fatto: ');
-                            console.log(result);
-                            this.response.messages.push({
-                                [name]: result
-                            });
-                            resolve();
-                        }.bind(this));
-                    break;
-                default:
-                    console.log('no validation provide for: ' + type);
-            }
-        });
+        switch (type) {
+            case 'int':
+                return Promise.resolve({[name] : `check is ${this.checkInt(value)}`});
+                break;
+            case 'shortText':
+                return Promise.resolve({[name] : `check is ${this.checkString(value)}`});
+                break;
+            case 'longText':
+                return Promise.resolve({[name] : `check is ${this.checkString(value)}`});
+                break;
+            case 'image':
+                // TODO: questa promise non arriva al return
+                return this.checkImage(name,value);
+                break;
+            default:
+                console.log('no validation provide for: ' + type);
+        }
     }
 
     checkInt(value) {
@@ -101,31 +96,32 @@ class Validator {
         return (typeof value === 'string');
     }
 
-    checkImage(value) {
+    checkImage(name,value) {
         return new Promise((resolve, reject) => {
             let url = appConfig.paths.baseUrl + '/' + appConfig.paths.uploads + '/' + value;
             // initial string of images
-            let magic = {
-                jpg: 'ffd8ffe0',
-                png: '89504e47',
-                gif: '47494638'
-            };
+            let magic = [
+                'ffd8ffe0', /* jpg */
+                'ffd8ffe1', /* jpg */
+                'ffd8ffe2', /* jpg */
+                'ffd8ffe3', /* jpg */
+                '89504E470D0A1A0A', /* png */
+                '47494638'
+            ];
             request({
                 method: 'GET',
                 url: url,
                 encoding: null // keeps the body as buffer
             }, function (err, response, body) {
                 if (!err && response.statusCode === 200) {
-                    let magigNumberInBody = body.toString('hex', 0, 4);
-                    if (magigNumberInBody === magic.jpg ||
-                        magigNumberInBody === magic.png ||
-                        magigNumberInBody === magic.gif) {
-                        resolve(true);
+                    let magicNumberInBody = body.toString('hex', 0, 4);
+                    if (magic.includes(magicNumberInBody)) {
+                        resolve({[name] : `image check is: ${true}`});
                     } else {
-                        resolve(false);
+                        resolve({[name] : `image check is: ${false} and ${magicNumberInBody}`});
                     }
                 } else {
-                    resolve(false);
+                    resolve({[name] : `image check is: ${false}`});
                 }
             });
         });
