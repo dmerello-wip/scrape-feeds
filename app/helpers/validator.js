@@ -15,22 +15,16 @@ class Validator {
         this.checks = [];
 
         /*
-        console.log('dati: ');
         console.dir(this.data);
-        console.log('struttura: ');
         console.dir(this.structure);
-        console.log('obbligatori: ');
         console.dir(this.mandatories);
         */
         this.validate();
 
         return new Promise((resolve, reject) => {
 
-            Promise.all(this.checks).then(values => {
-                this.response.messages = values;
-                reject(this.response.messages);
-            }).catch(error =>{
-                reject('devo finirlo');
+            Promise.all(this.checks).then(checksResults => {
+                reject(checksResults);
             });
 
         });
@@ -48,39 +42,80 @@ class Validator {
             if (mandatory) {
                 if (!this.data[fieldName]) {
                     // mandatory, not evalued
-                    this.checks.push( Promise.resolve({[fieldName] : 'mandatory not respected'}) );
+                    this.checks.push(Promise.resolve({
+                        name : fieldName,
+                        status: false,
+                        message: 'mandatory not respected'
+                    }));
                 } else {
                     // mandatory, evalued, check type
                     let check = this.checkType(typeToCheck, fieldValue, fieldName);
                     this.checks.push( check );
                 }
             } else {
-                if (this.data[fieldName]) {
+                if (this.datafieldName) {
                     // not mandatory, check type
                     let check = this.checkType(typeToCheck, fieldValue, fieldName);
                     this.checks.push( check );
                 } else {
                     // not mandatory, not evalued
-                    this.checks.push( Promise.resolve({[fieldName] : `check not necessary`}) );
+                    this.checks.push( Promise.resolve({
+                        name : fieldName,
+                        status: true
+                    }) );
                 }
             }
         }
 
     }
 
+
+
     checkType(type, value, name){
         switch (type) {
             case 'int':
-                return Promise.resolve({[name] : `check is ${this.checkInt(value)}`});
+                if (this.checkInt(value)) {
+                    return Promise.resolve({
+                        name : name,
+                        status: true
+                    });
+                } else {
+                    return Promise.resolve({
+                        name : name,
+                        status: false ,
+                        message: 'not an integer'
+                    });
+                }
                 break;
             case 'shortText':
-                return Promise.resolve({[name] : `check is ${this.checkString(value)}`});
+                if (this.checkString(value)) {
+                    return Promise.resolve({
+                        name : name,
+                        status: true
+                    });
+                } else {
+                    return Promise.resolve({
+                        name : name,
+                        status: false ,
+                        message: 'not a string'
+                    });
+                }
                 break;
             case 'longText':
-                return Promise.resolve({[name] : `check is ${this.checkString(value)}`});
+                if (this.checkString(value)) {
+                    return Promise.resolve({
+                        name : name,
+                        status: true
+                    });
+                } else {
+                    return Promise.resolve({
+                        name : name,
+                        status: false ,
+                        message: 'not a string'
+                    });
+                }
                 break;
             case 'image':
-                // TODO: questa promise non arriva al return
                 return this.checkImage(name,value);
                 break;
             default:
@@ -116,12 +151,23 @@ class Validator {
                 if (!err && response.statusCode === 200) {
                     let magicNumberInBody = body.toString('hex', 0, 4);
                     if (magic.includes(magicNumberInBody)) {
-                        resolve({[name] : `image check is: ${true}`});
+                        resolve({
+                            name : name,
+                            status: true
+                        });
                     } else {
-                        resolve({[name] : `image check is: ${false} and ${magicNumberInBody}`});
+                        resolve({
+                            name : name,
+                            status: false ,
+                            message: 'not an image'
+                        });
                     }
                 } else {
-                    resolve({[name] : `image check is: ${false}`});
+                    resolve({
+                        name : name,
+                        status: false ,
+                        message: 'not an existing image'
+                    });
                 }
             });
         });
