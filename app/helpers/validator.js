@@ -10,7 +10,7 @@ class Validator {
         this.mandatories = formMandatories;
         this.response = {
             success: false,
-            messages: []
+            errors: []
         };
         this.checks = [];
 
@@ -24,7 +24,21 @@ class Validator {
         return new Promise((resolve, reject) => {
 
             Promise.all(this.checks).then(checksResults => {
-                reject(checksResults);
+                // reject(checksResults);
+                let trueCounter = 0;
+                for (let msg of checksResults){
+                    if(!msg['status']){
+                        this.response.errors.push(msg);
+                    } else {
+                        trueCounter += 1;
+                    }
+                }
+                console.log(trueCounter + ' - ' + checksResults.length);
+                if (trueCounter === checksResults.length) {
+                    resolve();
+                } else {
+                    reject(this.response.errors);
+                }
             });
 
         });
@@ -159,7 +173,7 @@ class Validator {
                         resolve({
                             name : name,
                             status: false ,
-                            message: 'not an image'
+                            message: 'not a valid image format'
                         });
                     }
                 } else {
