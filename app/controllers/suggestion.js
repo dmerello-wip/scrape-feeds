@@ -22,11 +22,11 @@ class SuggestionCtrl {
                     .then((suggestionData) => {
                         res.json({'code': 200, 'message': suggestionData});
                     })
-                    .catch((message) => {
-                        res.json({'code': 400, 'message': message});
+                    .catch((errorMessage) => {
+                        res.json({'code': 400, 'message': errorMessage});
                     });
             }).catch((errorResponse) => {
-            console.dir(errorResponse);
+                res.json({'code': 400, 'message': errorResponse});
         });
     }
 

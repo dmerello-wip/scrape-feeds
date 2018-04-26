@@ -156,7 +156,12 @@ export default class CreateSuggestionsForm extends Component {
         })
             .then(res => res.json())
             .then(data => {
-                this.setState({ saved: true });
+                console.dir();
+                if(data.code === 200) {
+                    this.setState({ saved: true });
+                } else {
+                    console.dir(data);
+                }
             })
             .catch(error => {
                 console.log(error);

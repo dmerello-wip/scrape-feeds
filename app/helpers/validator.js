@@ -23,18 +23,17 @@ class Validator {
 
         return new Promise((resolve, reject) => {
 
-            Promise.all(this.checks).then(checksResults => {
-                // reject(checksResults);
+            Promise.all(this.checks).then(allPromisesResults => {
+                // reject(allPromisesResults);
                 let trueCounter = 0;
-                for (let msg of checksResults){
+                for (let msg of allPromisesResults){
                     if(!msg['status']){
                         this.response.errors.push(msg);
                     } else {
                         trueCounter += 1;
                     }
                 }
-                console.log(trueCounter + ' - ' + checksResults.length);
-                if (trueCounter === checksResults.length) {
+                if (trueCounter === allPromisesResults.length) {
                     resolve();
                 } else {
                     reject(this.response.errors);
