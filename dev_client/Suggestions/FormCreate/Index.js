@@ -18,9 +18,10 @@ export default class CreateSuggestionsForm extends Component {
         this.state = {
             previewImage: 'images/draghere.jpg',
             fields: {},
-            saved: false,
             tags: [],
-            tagSuggest: []
+            tagSuggest: [],
+            notifications: [],
+            saved: false,
         };
         // tags: [{ id: 1, text: "Thailand" }],
         // tagSuggest: ['USA']
@@ -156,11 +157,10 @@ export default class CreateSuggestionsForm extends Component {
         })
             .then(res => res.json())
             .then(data => {
-                console.dir();
                 if(data.code === 200) {
                     this.setState({ saved: true });
                 } else {
-                    console.dir(data);
+                    this.setState({ notifications: data.message });
                 }
             })
             .catch(error => {
@@ -172,6 +172,8 @@ export default class CreateSuggestionsForm extends Component {
     render() {
         let image = this.state.previewImage;
         let contents = this.state.fields;
+        let notifications = this.state.notifications;
+        const notificationClass = (notifications.length > 0) ? 'alert alert-danger' : 'hidden';
         const { tags, tagSuggest } = this.state;
         let dropZoneStyle = {
             backgroundSize: 'cover',
@@ -183,32 +185,35 @@ export default class CreateSuggestionsForm extends Component {
             return (
                 <div>
                     <form action="" onSubmit={this.handleSubmit} method="post" encType="multipart/form-data">
-                        <div className="row">
-                            <div className="col-md-8">
-                                <div className="form-group">
-                                    <label>Title</label>
-                                    <input type="text" className="form-control" name="title"
-                                           onChange={this.handleInputChange} placeholder={contents.title}/>
-                                </div>
-                                <div className="form-group">
-                                    <div className="drop-zone" style={dropZoneStyle}>
-                                        <FileDrop frame={document} onDrop={this.handleFileDrop} />
-                                    </div>
-                                </div>
-                                <ReactTags tags={tags}
-                                           suggestions={tagSuggest}
-                                           handleDelete={this.handleTagDelete}
-                                           handleAddition={this.handleTagAddition}
-                                           handleDrag={this.handleTagDrag} />
-                                <div className="form-group">
-                                    <textarea className="form-control" name="description" rows="3"
-                                              placeholder={contents.description} onChange={this.handleInputChange} />
-                                </div>
-                            </div>
-                            <div className="col-md-4">
-                                <button type="submit" className="btn btn-primary">Invia</button>
+
+                        <div className={notificationClass} >
+                            <ul>
+                                {notifications.map((msg) =>
+                                    <li id="{msg.name}"><strong>{msg.name}:</strong> {msg.message}</li>
+                                )}
+                            </ul>
+                        </div>
+                        <div className="form-group">
+                            <label>Title</label>
+                            <input type="text" className="form-control" name="title"
+                                   onChange={this.handleInputChange} placeholder={contents.title}/>
+                        </div>
+                        <div className="form-group">
+                            <div className="drop-zone" style={dropZoneStyle}>
+                                <FileDrop frame={document} onDrop={this.handleFileDrop} />
                             </div>
                         </div>
+                        <ReactTags tags={tags}
+                                   suggestions={tagSuggest}
+                                   handleDelete={this.handleTagDelete}
+                                   handleAddition={this.handleTagAddition}
+                                   handleDrag={this.handleTagDrag} />
+                        <div className="form-group">
+                            <textarea className="form-control" name="description" rows="3"
+                                      placeholder={contents.description} onChange={this.handleInputChange} />
+                        </div>
+
+                        <button type="submit" className="btn btn-primary">Invia</button>
                     </form>
                 </div>
             );
