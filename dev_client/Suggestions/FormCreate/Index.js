@@ -185,11 +185,10 @@ export default class CreateSuggestionsForm extends Component {
             return (
                 <div>
                     <form action="" onSubmit={this.handleSubmit} method="post" encType="multipart/form-data">
-
                         <div className={notificationClass} >
                             <ul>
-                                {notifications.map((msg) =>
-                                    <li id="{msg.name}"><strong>{msg.name}:</strong> {msg.message}</li>
+                                {notifications.map((msg, i) =>
+                                    <li key={'field_'+i}><strong>{msg.name}:</strong> {msg.message}</li>
                                 )}
                             </ul>
                         </div>
@@ -211,6 +210,11 @@ export default class CreateSuggestionsForm extends Component {
                         <div className="form-group">
                             <textarea className="form-control" name="description" rows="3"
                                       placeholder={contents.description} onChange={this.handleInputChange} />
+                        </div>
+                        <div className="form-group">
+                            <label>Url</label>
+                            <input type="text" className="form-control" name="url"
+                                   onChange={this.handleInputChange} placeholder={contents.url}/>
                         </div>
 
                         <button type="submit" className="btn btn-primary">Invia</button>

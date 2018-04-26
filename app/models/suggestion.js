@@ -22,7 +22,7 @@ class Suggestion {
 
     create(data) {
         return new Promise((resolve, reject) => {
-            const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`) VALUES (null, "' + appConfig.paths.uploads + '/' + data.file + '", "' + data.description + '", "' + data.title + '");';
+            const query = 'INSERT INTO suggestions (`id`, `image`, `description`, `title`, `url`) VALUES (null, "' + appConfig.paths.uploads + '/' + data.file + '", "' + data.description + '", "' + data.title + '", "' + data.url + '");';
             db.query(query, null, (data, error) => {
                 (!error) ? resolve(data) : reject(error);
             });
@@ -100,7 +100,7 @@ class Suggestion {
 
     update(data) {
         return new Promise((resolve, reject) => {
-            const query = "UPDATE `suggestions` SET `description`= '" + data.description + "',`image`= '" + appConfig.paths.uploads + '/' + data.file + "', `title` = '" + data.title + "' WHERE `suggestions`.`id` = " + data.id + ";";
+            const query = "UPDATE `suggestions` SET `description`= '" + data.description + "',`image`= '" + appConfig.paths.uploads + '/' + data.file + "', `title` = '" + data.title + "', `url` = '"+ data.url + "' WHERE `suggestions`.`id` = " + data.id + ";";
             db.query(query, null, function (data, error) {
                 (!error) ? resolve(data) : reject(error);
             });

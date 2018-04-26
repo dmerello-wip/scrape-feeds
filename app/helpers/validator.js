@@ -52,6 +52,9 @@ class Validator {
             let typeToCheck = field['type'];
             let fieldValue = this.data[fieldName];
             let mandatory = this.mandatories.includes(fieldName);
+
+            //console.log('checking field:  ' + fieldName + ' with value: ' + fieldValue + ' it should be a ' + typeToCheck);
+
             if (mandatory) {
                 if (!this.data[fieldName]) {
                     // mandatory, not evalued
@@ -66,7 +69,7 @@ class Validator {
                     this.checks.push( check );
                 }
             } else {
-                if (this.datafieldName) {
+                if (this.data[fieldName]) {
                     // not mandatory, check type
                     let check = this.checkType(typeToCheck, fieldValue, fieldName);
                     this.checks.push( check );
@@ -131,13 +134,37 @@ class Validator {
             case 'image':
                 return this.checkImage(name,value);
                 break;
+            case 'url':
+                if (this.checkUrl(value)) {
+                    return Promise.resolve({
+                        name : name,
+                        status: true
+                    });
+                } else {
+                    return Promise.resolve({
+                        name : name,
+                        status: false ,
+                        message: 'not a valid url'
+                    });
+                }
+                break;
             default:
                 console.log('no validation provide for: ' + type);
         }
     }
 
     checkInt(value) {
-        return Number.isInteger(value);
+        return !isNaN(value)
+    }
+
+    checkUrl(value) {
+        let pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return pattern.test(value);
     }
 
     checkString(value) {
@@ -154,7 +181,8 @@ class Validator {
                 'ffd8ffe2', /* jpg */
                 'ffd8ffe3', /* jpg */
                 '89504E470D0A1A0A', /* png */
-                '47494638'
+                '89504e47', /* png */
+                '47494638' /* png */
             ];
             request({
                 method: 'GET',

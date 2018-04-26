@@ -9,7 +9,8 @@ class SuggestionCtrl {
         let postData = {
             title: req.body.title,
             description: req.body.description,
-            file: (req.file) ? req.file.filename : undefined
+            file: (req.file) ? req.file.filename : undefined,
+            url: (req.body.url)
         };
         let tags = req.body.tags.split(',');
 
@@ -25,9 +26,10 @@ class SuggestionCtrl {
                     .catch((errorMessage) => {
                         res.json({'code': 400, 'message': errorMessage});
                     });
-            }).catch((errorResponse) => {
+            })
+            .catch((errorResponse) => {
                 res.json({'code': 400, 'message': errorResponse});
-        });
+            });
     }
 
     update(req, res) {
@@ -39,12 +41,19 @@ class SuggestionCtrl {
         };
         let tags = req.body.tags.split(',');
         // update my Suggestion article, and related tags
-        SuggestionMdl.updateAndRelateToTag(postData, tags)
-            .then((suggestionData) => {
-                res.json({'code': 200, 'message': suggestionData});
+
+        new Validator(postData, SuggestionMdl.config, SuggestionMdl.mandatories.create)
+            .then(() => {
+                SuggestionMdl.updateAndRelateToTag(postData, tags)
+                    .then((suggestionData) => {
+                        res.json({'code': 200, 'message': suggestionData});
+                    })
+                    .catch((message) => {
+                        res.json({'code': 400, 'message': message});
+                    });
             })
-            .catch((message) => {
-                res.json({'code': 400, 'message': message});
+            .catch((errorResponse) => {
+                res.json({'code': 400, 'message': errorResponse});
             });
     }
 
