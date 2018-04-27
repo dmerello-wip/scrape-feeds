@@ -4,7 +4,8 @@ const api = {
             create  : baseUrl + '/suggestion/create',
             update  : baseUrl + '/suggestion/update',
             delete  : baseUrl + '/suggestion/delete',
-            get     : baseUrl + '/suggestion/get'
+            get     : baseUrl + '/suggestion/get',
+            scrape  : baseUrl + '/suggestion/scrape',
         },
         tag : {
             create  : baseUrl + '/tag/create',

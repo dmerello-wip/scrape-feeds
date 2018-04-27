@@ -1,5 +1,6 @@
 const SuggestionMdl = require('./../models/suggestion');
 const Validator = require('./../helpers/validator');
+const Scraper = require("scrape-it");
 
 
 class SuggestionCtrl {
@@ -84,6 +85,24 @@ class SuggestionCtrl {
                     res.json({'code': 400, 'message': error});
                 });
         }
+    }
+
+    createFromUrl(req, res){
+        console.dir(req);
+        Scraper(req.body.url, {
+            title: "h1",
+            desc: ".header h2",
+            avatar: {
+                selector: "img:eq(0)",
+                attr: "src"
+            }
+        }).then(({ data, response }) => {
+            console.log(`Status Code: ${response.statusCode}`)
+            res.json({'code': 200, 'message': data});
+        })
+
+
+
     }
 
 
