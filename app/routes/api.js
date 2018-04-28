@@ -21,7 +21,6 @@ const storage = multer.diskStorage({
         cb(null, name + '-' + Date.now() + ext);
     }
 });
-const storeFields = multer({ storage: storage });
 
 
 /* ------------------------------------------------------ */
@@ -42,12 +41,17 @@ router.get('/', function(req, res) {
 // API for Suggestions
 /* ------------------------------------------------------ */
 
+
+// parse application/x-www-form-urlencoded
+
+const storeFields = multer({ storage: storage });
+
 router.get('/suggestion/get', suggestionCtrl.get);
 router.get('/suggestion/get/:id', suggestionCtrl.get);
 router.post('/suggestion/create', storeFields.single('image'), suggestionCtrl.create);
 router.post('/suggestion/update', storeFields.single('image'), suggestionCtrl.update);
 router.post('/suggestion/delete', storeFields.any(), suggestionCtrl.delete);
-router.post('/suggestion/scrape', suggestionCtrl.createFromUrl);
+router.post('/suggestion/scrape', storeFields.any(), suggestionCtrl.createFromUrl);
 
 /* ------------------------------------------------------ */
 // API for Tags

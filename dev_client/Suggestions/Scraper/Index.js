@@ -12,7 +12,8 @@ export default class ScraperForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fields: {}
+            fields: {},
+            notifications: []
         };
         //set the correct api to call
         this.api = api.suggestion.scrape;
@@ -42,10 +43,10 @@ export default class ScraperForm extends Component {
                 if (data.code === 200) {
                     console.log('scraper service called');
 
+                    this.setState({ notifications: [] });
                     // this.setState({saved: true});
                 } else {
-                    console.log('error in scraping. todo: create messages for notifications');
-                    // this.setState({ notifications: data.message });
+                    this.setState({ notifications: data.message });
                 }
             })
             .catch(error => {
@@ -55,12 +56,21 @@ export default class ScraperForm extends Component {
 
 
     render() {
+        let notifications = this.state.notifications;
+        const notificationClass = (notifications.length > 0) ? 'alert alert-danger' : 'hidden';
         if (this.state.saved) {
             return <Redirect to='/list'/>;
         } else {
             return (
                 <div>
                     <form action="" onSubmit={this.handleSubmit} method="post" encType="multipart/form-data">
+                        <div className={notificationClass} >
+                            <ul>
+                                {notifications.map((msg, i) =>
+                                    <li key={'field_'+i}><strong>{msg.name}:</strong> {msg.message}</li>
+                                )}
+                            </ul>
+                        </div>
                         <div className="form-group">
                             <label>Title</label>
                             <input type="text" className="form-control" name="url"

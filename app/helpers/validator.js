@@ -141,6 +141,7 @@ class Validator {
                         status: true
                     });
                 } else {
+                    console.log('checkUrl retunrs false');
                     return Promise.resolve({
                         name : name,
                         status: false ,

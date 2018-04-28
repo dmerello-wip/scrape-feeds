@@ -87,25 +87,37 @@ class SuggestionCtrl {
         }
     }
 
-    createFromUrl(req, res){
-        console.dir(req);
-        Scraper(req.body.url, {
-            title: "h1",
-            desc: ".header h2",
-            avatar: {
-                selector: "img:eq(0)",
-                attr: "src"
-            }
-        }).then(({ data, response }) => {
-            console.log(`Status Code: ${response.statusCode}`)
-            res.json({'code': 200, 'message': data});
-        })
-
-
+    createFromUrl(req, res) {
+        let postData = {
+            url: req.body.url,
+        };
+        new Validator(postData, [{name: 'url', type: 'url'}], ['url'])
+            .then(() => {
+                Scraper(req.body.url, {
+                    title: "h1",
+                    image: {
+                        selector: "img",
+                        attr: "src"
+                    }
+                }).then(({data, response}) => {
+                    console.log(`Status Code: ${response.statusCode}`)
+                    res.json({'code': 200, 'message': data});
+                }).catch(()=>{
+                    res.json({
+                        'code': 200,
+                        'message': [{
+                            name : 'form',
+                            status: false,
+                            message: 'error in scraping url ...'
+                        }]
+                    });
+                });
+            })
+            .catch((validationErrors) => {
+                res.json({'code': 400, 'message': validationErrors});
+            });
 
     }
-
-
 }
 
 
