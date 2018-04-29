@@ -94,17 +94,28 @@ class SuggestionCtrl {
         new Validator(postData, [{name: 'url', type: 'url'}], ['url'])
             .then(() => {
                 Scraper(req.body.url, {
-                    title: "h1",
+                    title: {
+                        selector: 'meta[property="og:title"]',
+                        attr: "content"
+                    },
                     image: {
-                        selector: "img",
-                        attr: "src"
+                        selector: 'meta[property="og:image"]',
+                        attr: "content"
+                    },
+                    description: {
+                        selector: 'meta[property="og:description"]',
+                        attr: "content"
+                    },
+                    tags: {
+                        selector: 'meta[name="keywords"]',
+                        attr: "content"
                     }
                 }).then(({data, response}) => {
                     console.log(`Status Code: ${response.statusCode}`)
                     res.json({'code': 200, 'message': data});
                 }).catch(()=>{
                     res.json({
-                        'code': 200,
+                        'code': 400,
                         'message': [{
                             name : 'form',
                             status: false,
