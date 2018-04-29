@@ -26,7 +26,7 @@ export default class List extends Component {
         const jsonUrl = this.api;
 
         if (jsonUrl === undefined) {
-            throw new Error('api not responding to react app');
+            throw new Error('no api avaiable?');
         }
         fetch(jsonUrl)
             .then(res => res.json())
@@ -35,7 +35,6 @@ export default class List extends Component {
                     this.setState({
                         items: result.message
                     });
-                    //console.dir(this.state.items);
                 },
                 (error) => {console.log(error)}
             );
@@ -47,7 +46,7 @@ export default class List extends Component {
         return (
             <div>
                 {items.map((item) =>
-                    <Article key={item.id} contents={item} editable={true}/>
+                    <Article key={item.id} contents={item} editable={true} />
                 )}
             </div>
         );

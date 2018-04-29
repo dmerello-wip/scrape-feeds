@@ -83,7 +83,15 @@ class Suggestion {
 
     getAll(req, res) {
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM `suggestions`.`suggestions`;';
+            const query = `SELECT s.*, GROUP_CONCAT(DISTINCT t.name) tags
+            from (select distinct s.*
+            from suggestions s
+            JOIN suggestions_tags s_t on s_t.suggestion = s.id
+            JOIN tags t on t.id = s_t.tag
+            GROUP BY s.id) s
+            JOIN suggestions_tags s_t on s_t.suggestion = s.id
+            JOIN tags t on t.id = s_t.tag
+            GROUP BY s.id`;
             db.query(query, null, (data, error) => {
                 (!error) ? resolve(data) : reject(error);
             });
@@ -92,7 +100,7 @@ class Suggestion {
 
     get(id) {
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM `suggestions` WHERE `suggestions`.`id` = ' + id + ';';
+            const query = `SELECT * FROM suggestions WHERE suggestions.id =  ${id} ;`;
             db.query(query, null, (data, error) => {
                 (!error) ? resolve(data) : reject(error);
             });

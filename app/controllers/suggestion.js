@@ -66,23 +66,18 @@ class SuggestionCtrl {
     }
 
     get(req, res) {
-        if (req.params.id) {
-            SuggestionMdl.get(req.params.id)
-                .then((suggestionData) => {
-                    res.json({'code': 200, 'message': suggestionData});
-                })
-                .catch((error) => {
-                    res.json({'code': 400, 'message': error});
-                });
-        } else {
-            SuggestionMdl.getAll()
-                .then((data) => {
-                    res.json({'code': 200, 'message': data});
-                })
-                .catch((error) => {
-                    res.json({'code': 400, 'message': error});
-                });
-        }
+        const getPromise = (req.params.id) ? SuggestionMdl.get(req.params.id) : SuggestionMdl.getAll();
+        getPromise
+            .then((data) => {
+               // tags: from string to array:
+                for (let item of data) {
+                    item.tags =  item.tags.split(',');
+                }
+                res.json({'code': 200, 'message': data});
+            })
+            .catch((error) => {
+                res.json({'code': 400, 'message': error});
+            });
     }
 
     scrapeFromUrl(req, res) {

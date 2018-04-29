@@ -88,16 +88,27 @@ export default class CreateSuggestionsForm extends Component {
     }
 
     checkIfEditOrCreate(){
+        // get state from routing inherit properties:
         const ingoingState = this.props.location.state;
+        // if it exist, the form edits
         if(ingoingState){
+            // from the tags array to the tag object expected from tag component:
+            let tags = ingoingState.itemContents.tags;
+            tags.forEach(function (value, i) {
+                tags[i] = { id: i , text : value }
+            });
+            // remove tags from contents
+            delete ingoingState.itemContents.tags;
             this.setState({
                 previewImage: ingoingState.itemContents.image,
-                fields: ingoingState.itemContents
+                fields: ingoingState.itemContents,
+                tags: tags
             });
-            //set the correct api to call
+            // set the correct api to call
             this.api = api.suggestion.update;
         } else {
-            //set the correct api to call
+            // no inherit state: the form creates
+            // set the correct api to call
             this.api = api.suggestion.create;
         }
     }

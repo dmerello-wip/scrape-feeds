@@ -55,7 +55,6 @@ export default class Article extends Component {
     }
 
 
-
     render() {
         const contents = this.props.contents;
         const footer = this.getFooterPanel();
@@ -71,6 +70,11 @@ export default class Article extends Component {
                             <figure>
                                 <img src={contents.image} />
                             </figure>
+                            <ul className="tags">
+                                {contents.tags.map((tag, i) =>
+                                    <li key={'tag_'+i}>{tag}</li>
+                                )}
+                            </ul>
                             {contents.description}
                         </div>
                         {footer}
