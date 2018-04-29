@@ -51,7 +51,7 @@ router.get('/suggestion/get/:id', suggestionCtrl.get);
 router.post('/suggestion/create', storeFields.single('image'), suggestionCtrl.create);
 router.post('/suggestion/update', storeFields.single('image'), suggestionCtrl.update);
 router.post('/suggestion/delete', storeFields.any(), suggestionCtrl.delete);
-router.post('/suggestion/scrape', storeFields.any(), suggestionCtrl.createFromUrl);
+router.post('/suggestion/scrape', storeFields.any(), suggestionCtrl.scrapeFromUrl);
 
 /* ------------------------------------------------------ */
 // API for Tags

@@ -1,6 +1,5 @@
 const SuggestionMdl = require('./../models/suggestion');
 const Validator = require('./../helpers/validator');
-const Scraper = require("scrape-it");
 
 
 class SuggestionCtrl {
@@ -16,7 +15,6 @@ class SuggestionCtrl {
         let tags = req.body.tags.split(',');
 
         // TODO: validate tags data
-        // TODO: Validate Suggestions data
         new Validator(postData, SuggestionMdl.config, SuggestionMdl.mandatories.create)
             .then(() => {
                 // create my Suggestion article and join tags
@@ -43,7 +41,7 @@ class SuggestionCtrl {
         let tags = req.body.tags.split(',');
         // update my Suggestion article, and related tags
 
-        new Validator(postData, SuggestionMdl.config, SuggestionMdl.mandatories.create)
+        new Validator(postData, SuggestionMdl.config, SuggestionMdl.mandatories.update)
             .then(() => {
                 SuggestionMdl.updateAndRelateToTag(postData, tags)
                     .then((suggestionData) => {
@@ -87,48 +85,33 @@ class SuggestionCtrl {
         }
     }
 
-    createFromUrl(req, res) {
+    scrapeFromUrl(req, res) {
         let postData = {
             url: req.body.url,
         };
         new Validator(postData, [{name: 'url', type: 'url'}], ['url'])
             .then(() => {
-                Scraper(req.body.url, {
-                    title: {
-                        selector: 'meta[property="og:title"]',
-                        attr: "content"
-                    },
-                    image: {
-                        selector: 'meta[property="og:image"]',
-                        attr: "content"
-                    },
-                    description: {
-                        selector: 'meta[property="og:description"]',
-                        attr: "content"
-                    },
-                    tags: {
-                        selector: 'meta[name="keywords"]',
-                        attr: "content"
-                    }
-                }).then(({data, response}) => {
-                    console.log(`Status Code: ${response.statusCode}`)
-                    res.json({'code': 200, 'message': data});
-                }).catch(()=>{
-                    res.json({
-                        'code': 400,
-                        'message': [{
-                            name : 'form',
-                            status: false,
-                            message: 'error in scraping url ...'
-                        }]
+                SuggestionMdl.scrapeNewSuggestion(postData.url)
+                    .then((scrapedData) => {
+                        res.json({'code': 200, 'message': scrapedData});
+                    }).catch((scraperErrors) => {
+                        res.json({
+                            'code': 400,
+                            'message': [{
+                                name : 'form',
+                                status: false,
+                                message: 'error in scraping url ...'
+                            }]
+                        });
                     });
-                });
             })
             .catch((validationErrors) => {
                 res.json({'code': 400, 'message': validationErrors});
             });
-
     }
+
+
+
 }
 
 

@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {render} from 'react-dom';
 import {Redirect} from 'react-router-dom';
+import Article from '../Article/Index.js';
 // Data
 import {api, events} from '../../globals';
 
@@ -41,8 +42,10 @@ export default class ScraperForm extends Component {
             .then(res => res.json())
             .then(data => {
                 if (data.code === 200) {
-                    console.log('scraper service called');
-
+                    this.setState({
+                       articleData : data.message
+                    });
+                    // empty old notifications:
                     this.setState({ notifications: [] });
                     // this.setState({saved: true});
                 } else {
@@ -54,10 +57,24 @@ export default class ScraperForm extends Component {
             });
     }
 
+    getArticleContents(){
+        if(this.state.articleData) {
+            return <div>
+                <Article contents={this.state.articleData} editable={false}/>
+            </div>
+        } else {
+            return <div>Non ci sono</div>
+        }
+    }
+
 
     render() {
+
         let notifications = this.state.notifications;
         const notificationClass = (notifications.length > 0) ? 'alert alert-danger' : 'hidden';
+
+        let articleContents = this.getArticleContents();
+
         if (this.state.saved) {
             return <Redirect to='/list'/>;
         } else {
@@ -79,6 +96,8 @@ export default class ScraperForm extends Component {
 
                         <button type="submit" className="btn btn-primary">Scrape</button>
                     </form>
+                    <hr/>
+                    {articleContents}
                 </div>
             );
         }

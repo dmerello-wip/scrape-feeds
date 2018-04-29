@@ -47,7 +47,7 @@ export default class List extends Component {
         return (
             <div>
                 {items.map((item) =>
-                    <Article key={item.id} contents={item} />
+                    <Article key={item.id} contents={item} editable={true}/>
                 )}
             </div>
         );

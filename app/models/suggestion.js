@@ -1,6 +1,7 @@
 const db = require('../helpers/dbPool');
 const appConfig = require('../config.js');
 const tagMdl = require('./tag');
+const Scraper = require("scrape-it");
 
 
 class Suggestion {
@@ -124,6 +125,34 @@ class Suggestion {
             });
         });
     };
+
+    scrapeNewSuggestion(remoteContentUrl){
+        console.log('scrapeNewSuggestion called with '+remoteContentUrl);
+        return new Promise((resolve, reject)=>{
+            Scraper(remoteContentUrl, {
+                title: {
+                    selector: 'meta[property="og:title"]',
+                    attr: "content"
+                },
+                image: {
+                    selector: 'meta[property="og:image"]',
+                    attr: "content"
+                },
+                description: {
+                    selector: 'meta[property="og:description"]',
+                    attr: "content"
+                },
+                tags: {
+                    selector: 'meta[name="keywords"]',
+                    attr: "content"
+                }
+            }).then(({data, response}) => {
+                resolve(data);
+            }).catch(()=>{
+                reject();
+            });
+        });
+    }
 
 
 }

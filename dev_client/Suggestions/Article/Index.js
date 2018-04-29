@@ -38,10 +38,27 @@ export default class Article extends Component {
             });
     }
 
+    getFooterPanel() {
+        if (this.props.editable) {
+            return (
+            <div>
+                <div className="panel-footer">
+                    <button className="btn" onClick={this.remove}>remove</button>
+                    <Link to={{
+                        pathname: '/create',
+                        state: { itemContents: this.props.contents }
+                    }} className="btn" >edit</Link>
+                </div>
+            </div>
+            );
+        }
+    }
+
 
 
     render() {
         const contents = this.props.contents;
+        const footer = this.getFooterPanel();
 
         if(this.state.removed){
             return <Redirect to='/list'/>;
@@ -56,14 +73,7 @@ export default class Article extends Component {
                             </figure>
                             {contents.description}
                         </div>
-                        <div className="panel-footer">
-                            <button className="btn" onClick={this.remove}>remove</button>
-                            {/*<Link to="/create" className="btn" params={{ itemId: contents.id }}>edit</Link>*/}
-                            <Link to={{
-                                pathname: '/create',
-                                state: { itemContents: contents }
-                            }} className="btn" >edit</Link>
-                        </div>
+                        {footer}
                     </div>
                 </div>
             );
