@@ -88,6 +88,9 @@ class SuggestionCtrl {
             .then(() => {
                 SuggestionMdl.scrapeNewSuggestion(postData.url)
                     .then((scrapedData) => {
+                        //set scraped tags to array
+                        let tags = scrapedData.tags.split(',');
+                        scrapedData.tags = tags;
                         res.json({'code': 200, 'message': scrapedData});
                     }).catch((scraperErrors) => {
                         res.json({

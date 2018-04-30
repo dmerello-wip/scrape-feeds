@@ -59,9 +59,11 @@ export default class ScraperForm extends Component {
 
     getArticleContents(){
         if(this.state.articleData) {
-            return <div>
-                <Article contents={this.state.articleData} editable={false}/>
-            </div>
+            return (
+                <div>
+                    <Article contents={this.state.articleData} editable={false}/>
+                </div>
+            );
         } else {
             return <div>Non ci sono</div>
         }
