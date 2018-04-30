@@ -46,7 +46,8 @@ export default class Article extends Component {
                     <button className="btn" onClick={this.remove}>remove</button>
                     <Link to={{
                         pathname: '/create',
-                        state: { itemContents: this.props.contents }
+                        state: { itemContents: this.props.contents },
+                        isUpdate: true
                     }} className="btn" >edit</Link>
                 </div>
             </div>

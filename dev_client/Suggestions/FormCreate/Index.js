@@ -105,7 +105,11 @@ export default class CreateSuggestionsForm extends Component {
                 tags: tags
             });
             // set the correct api to call
-            this.api = api.suggestion.update;
+            if(this.props.isUpdate) {
+                this.api = api.suggestion.update;
+            } else {
+                this.api = api.suggestion.create;
+            }
         } else {
             // no inherit state: the form creates
             // set the correct api to call

@@ -1,8 +1,11 @@
 // Javascript
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import {Redirect} from 'react-router-dom';
-import Article from '../Article/Index.js';
+import {Link, Redirect} from 'react-router-dom';
+
+//Components
+import FormCreate from '../FormCreate/Index.js';
+
 // Data
 import {api, events} from '../../globals';
 
@@ -61,11 +64,13 @@ export default class ScraperForm extends Component {
         if(this.state.articleData) {
             return (
                 <div>
-                    <Article contents={this.state.articleData} editable={false}/>
+                    <Redirect to={{
+                        pathname: '/create',
+                        state: { itemContents : this.state.articleData },
+                        isUpdate: false
+                    }}/>
                 </div>
             );
-        } else {
-            return <div>Non ci sono</div>
         }
     }
 
