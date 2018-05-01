@@ -91,30 +91,55 @@ export default class CreateSuggestionsForm extends Component {
         // get state from routing inherit properties:
         const ingoingState = this.props.location.state;
         // if it exist, the form edits
-        if(ingoingState){
-            // from the tags array to the tag object expected from tag component:
-            let tags = ingoingState.itemContents.tags;
-            tags.forEach(function (value, i) {
-                tags[i] = { id: i , text : value }
+        if(!ingoingState){
+            // no inherit state: the form creates
+            // set the correct api to call
+            this.api = api.suggestion.create;
+        } else {
+
+            // prepare tags string to tag component
+            this.prepareRetrievedTags(ingoingState.itemContents.tags).then((tags)=>{
+                // remove tags from contents
+                delete ingoingState.itemContents.tags;
+                this.setState({
+                    tags: tags
+                });
             });
-            // remove tags from contents
-            delete ingoingState.itemContents.tags;
+
+            // convert image url to image file
+            this.prepareRetrievedImage(ingoingState.itemContents.image).then((file)=>{
+                this.state.fields.image = file;
+            });
+
             this.setState({
                 previewImage: ingoingState.itemContents.image,
-                fields: ingoingState.itemContents,
-                tags: tags
+                fields: ingoingState.itemContents
             });
             // set the correct api to call
-            if(this.props.isUpdate) {
+            if(this.props.location.isUpdate) {
                 this.api = api.suggestion.update;
             } else {
                 this.api = api.suggestion.create;
             }
-        } else {
-            // no inherit state: the form creates
-            // set the correct api to call
-            this.api = api.suggestion.create;
         }
+    }
+
+    prepareRetrievedTags(tags){
+        return new Promise((resolve, reject)=>{
+            // from the tags array to the tag object expected from tag component:
+            tags.forEach(function (value, i) {
+                tags[i] = { id: i , text : value }
+            });
+            resolve(tags);
+        });
+    }
+
+    prepareRetrievedImage(imageUrl){
+        return new Promise((resolve, reject)=>{
+            fetch(imageUrl).then((response)=>{
+                resolve( response.blob() );
+            });
+        });
     }
 
     handleInputChange(event) {

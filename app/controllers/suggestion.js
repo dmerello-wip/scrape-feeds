@@ -13,8 +13,8 @@ class SuggestionCtrl {
             url: (req.body.url)
         };
         let tags = req.body.tags.split(',');
-
         // TODO: validate tags data
+
         new Validator(postData, SuggestionMdl.config, SuggestionMdl.mandatories.create)
             .then(() => {
                 // create my Suggestion article and join tags
