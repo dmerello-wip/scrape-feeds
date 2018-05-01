@@ -25,7 +25,6 @@ const App = () => (
                 <Route path="/create" component={FormCreate}/>
                 <Route exact path="/list" component={List}/>
                 <Route path="/scrape" component={Scraper}/>
-                <Redirect to="/list" />
             </div>
         </div>
     </Router>

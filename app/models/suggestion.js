@@ -135,7 +135,6 @@ class Suggestion {
     };
 
     scrapeNewSuggestion(remoteContentUrl){
-        console.log('scrapeNewSuggestion called with '+remoteContentUrl);
         return new Promise((resolve, reject)=>{
             Scraper(remoteContentUrl, {
                 title: {
@@ -155,12 +154,15 @@ class Suggestion {
                     attr: "content"
                 }
             }).then(({data, response}) => {
+                console.log(data);
                 resolve(data);
             }).catch(()=>{
                 reject();
             });
         });
     }
+
+
 
 
 }

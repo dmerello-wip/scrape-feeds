@@ -7,8 +7,6 @@ import { Redirect } from 'react-router-dom';
 import { api, events } from '../../globals';
 import { WithContext as ReactTags } from 'react-tag-input';
 
-// Styles
-
 
 export default class CreateSuggestionsForm extends Component {
 
@@ -90,11 +88,13 @@ export default class CreateSuggestionsForm extends Component {
     checkIfEditOrCreate(){
         // get state from routing inherit properties:
         const ingoingState = this.props.location.state;
-        // if it exist, the form edits
+
         if(!ingoingState){
+
             // no inherit state: the form creates
             // set the correct api to call
             this.api = api.suggestion.create;
+
         } else {
 
             // prepare tags string to tag component
@@ -108,6 +108,7 @@ export default class CreateSuggestionsForm extends Component {
 
             // convert image url to image file
             this.prepareRetrievedImage(ingoingState.itemContents.image).then((file)=>{
+                console.log(file);
                 this.state.fields.image = file;
             });
 
@@ -115,6 +116,7 @@ export default class CreateSuggestionsForm extends Component {
                 previewImage: ingoingState.itemContents.image,
                 fields: ingoingState.itemContents
             });
+
             // set the correct api to call
             if(this.props.location.isUpdate) {
                 this.api = api.suggestion.update;
@@ -135,8 +137,19 @@ export default class CreateSuggestionsForm extends Component {
     }
 
     prepareRetrievedImage(imageUrl){
+        // TODO: ok for update, not for scraping
+        let headers = new Headers({
+            'Access-Control-Allow-Origin':'',
+            'Content-Type': 'multipart/form-data'
+        });
+        let fetchInit = {
+            method: 'GET',
+            headers: headers,
+            mode: 'no-cors',
+            cache: 'default'
+        };
         return new Promise((resolve, reject)=>{
-            fetch(imageUrl).then((response)=>{
+            fetch(imageUrl, fetchInit).then((response)=>{
                 resolve( response.blob() );
             });
         });
