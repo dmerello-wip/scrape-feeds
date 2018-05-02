@@ -46,11 +46,8 @@ export default class ScraperForm extends Component {
             .then(data => {
                 if (data.code === 200) {
                     this.setState({
-                       articleData : data.message
+                        articleData: data.message
                     });
-                    // empty old notifications:
-                    this.setState({ notifications: [] });
-                    // this.setState({saved: true});
                 } else {
                     this.setState({ notifications: data.message });
                 }
@@ -60,19 +57,6 @@ export default class ScraperForm extends Component {
             });
     }
 
-    getArticleContents(){
-        if(this.state.articleData) {
-            return (
-                <div>
-                    <Redirect to={{
-                        pathname: '/create',
-                        state: { itemContents : this.state.articleData },
-                        isUpdate: false
-                    }}/>
-                </div>
-            );
-        }
-    }
 
 
     render() {
@@ -80,10 +64,15 @@ export default class ScraperForm extends Component {
         let notifications = this.state.notifications;
         const notificationClass = (notifications.length > 0) ? 'alert alert-danger' : 'hidden';
 
-        let articleContents = this.getArticleContents();
 
-        if (this.state.saved) {
-            return <Redirect to='/list'/>;
+        if (this.state.articleData) {
+            return (
+                <Redirect to={{
+                    pathname: '/create',
+                    state: { itemContents : this.state.articleData },
+                    isUpdate: false
+                }}/>
+            );
         } else {
             return (
                 <div>
@@ -96,15 +85,13 @@ export default class ScraperForm extends Component {
                             </ul>
                         </div>
                         <div className="form-group">
-                            <label>Title</label>
+                            <label>Url to scrape</label>
                             <input type="text" className="form-control" name="url"
                                    onChange={this.handleInputChange} placeholder="https://somedomain.est/etcetera"/>
                         </div>
 
                         <button type="submit" className="btn btn-primary">Scrape</button>
                     </form>
-                    <hr/>
-                    {articleContents}
                 </div>
             );
         }

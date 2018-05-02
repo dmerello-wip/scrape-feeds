@@ -154,8 +154,24 @@ class Suggestion {
                     attr: "content"
                 }
             }).then(({data, response}) => {
-                console.log(data);
-                resolve(data);
+                console.log('prima');
+                console.log(data.image);
+                require('request')(
+                    {
+                        url: data.image,
+                        encoding: 'binary'
+                    }
+                    , function (e,r,b) {
+                        var type    = r.headers["content-type"];
+                        var prefix  = "data:" + type + ";base64,";
+                        var base64  = new Buffer(b, 'binary').toString('base64');
+                        var dataURI = prefix + base64;
+                        console.log(dataURI);
+                        data.image = dataURI;
+                        resolve(data);
+                    }
+                );
+
             }).catch(()=>{
                 reject();
             });

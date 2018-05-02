@@ -106,9 +106,10 @@ export default class CreateSuggestionsForm extends Component {
                 });
             });
 
-            // convert image url to image file
+            // TODO: check what if this method is not called in case of receiveng base64 from scraping
+            // in update: convert image url to image file
+            // in scraping i receive a base64: so what the hel am i doing?
             this.prepareRetrievedImage(ingoingState.itemContents.image).then((file)=>{
-                console.log(file);
                 this.state.fields.image = file;
             });
 
@@ -126,6 +127,7 @@ export default class CreateSuggestionsForm extends Component {
         }
     }
 
+
     prepareRetrievedTags(tags){
         return new Promise((resolve, reject)=>{
             // from the tags array to the tag object expected from tag component:
@@ -136,8 +138,8 @@ export default class CreateSuggestionsForm extends Component {
         });
     }
 
+
     prepareRetrievedImage(imageUrl){
-        // TODO: ok for update, not for scraping
         let headers = new Headers({
             'Access-Control-Allow-Origin':'',
             'Content-Type': 'multipart/form-data'
@@ -148,12 +150,16 @@ export default class CreateSuggestionsForm extends Component {
             mode: 'no-cors',
             cache: 'default'
         };
+
+        let myRequest = new Request(imageUrl, fetchInit);
+
         return new Promise((resolve, reject)=>{
-            fetch(imageUrl, fetchInit).then((response)=>{
+            fetch(myRequest).then((response)=>{
                 resolve( response.blob() );
             });
         });
     }
+
 
     handleInputChange(event) {
         const target = event.target;
@@ -223,14 +229,13 @@ export default class CreateSuggestionsForm extends Component {
 
 
     render() {
-        let image = this.state.previewImage;
         let contents = this.state.fields;
         let notifications = this.state.notifications;
         const notificationClass = (notifications.length > 0) ? 'alert alert-danger' : 'hidden';
         const { tags, tagSuggest } = this.state;
         let dropZoneStyle = {
             backgroundSize: 'cover',
-            backgroundImage: "url(" + image + ")"
+            backgroundImage: "url(" + this.state.previewImage + ")"
         };
         if (this.state.saved) {
             return <Redirect to='/list'/>;

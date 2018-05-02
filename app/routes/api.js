@@ -9,7 +9,8 @@ const appConfig = require('./../config.js');
 // File upload Configurations
 /* ------------------------------------------------------ */
 
-// TODO: spostare fra gli helper e esportarlo:
+// TODO: move this in a helper class
+// TODO: if i receive a base64 how can I select di extension?
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
