@@ -54,9 +54,11 @@ router.post('/suggestion/update', storeFields.single('image'), suggestionCtrl.up
 router.post('/suggestion/delete', storeFields.any(), suggestionCtrl.delete);
 router.post('/suggestion/scrape', storeFields.any(), suggestionCtrl.scrapeFromUrl);
 
+
 /* ------------------------------------------------------ */
 // API for Tags
 /* ------------------------------------------------------ */
+
 
 router.get('/tag/get', tagCtrl.get);
 
