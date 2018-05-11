@@ -4,10 +4,12 @@ const passport = require('passport');
 const auth = require('./../auth');
 
 
+// TODO: session is not consinstent from routers
+// try this: https://expressjs.com/en/resources/middleware/session.html
+
 adminRouter.get('/', (req, res) => {
-    console.log('a /admin la sessione: ');
-    console.log(req.session.token);
-    if (req.session.token) {
+    console.log('a /admin : ');
+    if (res.cookie('token')!=='') {
         res.cookie('token', req.session.token);
         res.redirect('/dashboard');
     } else {
