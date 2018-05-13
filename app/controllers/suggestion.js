@@ -5,6 +5,7 @@ const Validator = require('./../helpers/validator');
 class SuggestionCtrl {
 
     create(req, res) {
+
         // data to post:
         let postData = {
             title: req.body.title,

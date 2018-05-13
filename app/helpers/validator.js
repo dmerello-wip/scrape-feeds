@@ -191,6 +191,8 @@ class Validator {
                 url: url,
                 encoding: null // keeps the body as buffer
             }, function (err, response, body) {
+                //TODO: check the error on https self signed certificate
+                console.log('err'+err);
                 if (!err && response.statusCode === 200) {
                     let magicNumberInBody = body.toString('hex', 0, 4);
                     if (magic.includes(magicNumberInBody)) {

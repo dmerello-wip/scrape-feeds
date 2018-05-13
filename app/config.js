@@ -1,6 +1,6 @@
 
 exports.paths = {
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://localhost:443',
     uploads : 'uploads',
     public : 'public'
 }

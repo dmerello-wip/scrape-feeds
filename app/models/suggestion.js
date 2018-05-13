@@ -154,8 +154,7 @@ class Suggestion {
                     attr: "content"
                 }
             }).then(({data, response}) => {
-                console.log('prima');
-                console.log(data.image);
+                // call data.image (image url) and get base64 data of it
                 require('request')(
                     {
                         url: data.image,
@@ -166,7 +165,6 @@ class Suggestion {
                         var prefix  = "data:" + type + ";base64,";
                         var base64  = new Buffer(b, 'binary').toString('base64');
                         var dataURI = prefix + base64;
-                        console.log(dataURI);
                         data.image = dataURI;
                         resolve(data);
                     }
