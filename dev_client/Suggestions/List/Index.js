@@ -7,7 +7,6 @@ import Article from '../Article/Index.js';
 import {events, api} from '../../globals';
 
 export default class List extends Component {
-    //TODO: update the list once a new entry is created
 
     constructor(props) {
         super(props);

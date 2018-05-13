@@ -106,9 +106,8 @@ export default class CreateSuggestionsForm extends Component {
                 });
             });
 
-            // TODO: check what if this method is not called in case of receiveng base64 from scraping
             // in update: convert image url to image file
-            // in scraping i receive a base64: so what the hel am i doing?
+            // in scraping i receive a base64: so am i re-doing it?
             this.prepareRetrievedImage(ingoingState.itemContents.image).then((file)=>{
                 this.state.fields.image = file;
             });

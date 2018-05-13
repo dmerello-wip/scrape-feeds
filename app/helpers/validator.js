@@ -186,13 +186,13 @@ class Validator {
                 '89504e47', /* png */
                 '47494638' /* png */
             ];
+            // TODO: remove the "strictSSL: false". Find a more secure way to solve the self signed certificate error
             request({
                 method: 'GET',
                 url: url,
+                strictSSL: false,
                 encoding: null // keeps the body as buffer
             }, function (err, response, body) {
-                //TODO: check the error on https self signed certificate
-                console.log('err'+err);
                 if (!err && response.statusCode === 200) {
                     let magicNumberInBody = body.toString('hex', 0, 4);
                     if (magic.includes(magicNumberInBody)) {
