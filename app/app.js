@@ -7,6 +7,8 @@ const passport = require('passport');
 const auth = require('./auth');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
+const session = require('express-session')
+
 
 
 /* ------------------------------------------------------ */
@@ -15,7 +17,9 @@ const cookieSession = require('cookie-session');
 auth(passport);
 app.use(passport.initialize());
 
+
 app.use(cookieSession({
+
     name: 'session',
     keys: ['456asd564das6'],
     maxAge: 24 * 60 * 60 * 1000
@@ -23,12 +27,12 @@ app.use(cookieSession({
 app.use(cookieParser());
 
 
+
 /* ------------------------------------------------------ */
 // FRONTEND: serve static files
 /* ------------------------------------------------------ */
 
 app.use(express.static('public'));
-
 
 /* ------------------------------------------------------ */
 // API: serve api through /api routing

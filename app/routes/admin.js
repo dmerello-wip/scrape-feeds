@@ -4,7 +4,7 @@ const passport = require('passport');
 const auth = require('./../auth');
 
 
-// TODO: session is not consinstent from routers
+// TODO: session is not consinstent between routers
 // try this: https://expressjs.com/en/resources/middleware/session.html
 
 adminRouter.get('/', (req, res) => {
