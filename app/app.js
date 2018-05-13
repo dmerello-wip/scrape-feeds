@@ -5,10 +5,7 @@ const adminRouting = require('./routes/admin');
 // passport auth
 const passport = require('passport');
 const auth = require('./auth');
-const cookieParser = require('cookie-parser');
-const cookieSession = require('cookie-session');
 const session = require('express-session')
-
 
 
 /* ------------------------------------------------------ */
@@ -18,14 +15,14 @@ auth(passport);
 app.use(passport.initialize());
 
 
-app.use(cookieSession({
-
-    name: 'session',
-    keys: ['456asd564das6'],
-    maxAge: 24 * 60 * 60 * 1000
-}));
-app.use(cookieParser());
-
+app.use(session(
+    {
+        secret: 'key-boh-secret',
+        cookie: { maxAge: 60000, secure:true },
+        resave: false,
+        saveUninitialized: true
+    }
+));
 
 
 /* ------------------------------------------------------ */
@@ -55,8 +52,9 @@ app.get('/auth/google/callback',
         failureRedirect: '/error'
     }),
     (req, res) => {
-        //console.log(req.user.token);
-        console.log('google returned user.token');
+        console.log('google returned user.token:');
+        console.log(req.user.token);
+        console.log('google returned user:');
         console.dir(req.user);
         req.session.token = req.user.token;
         res.redirect('/admin');
