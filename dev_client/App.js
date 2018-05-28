@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { _ } from 'lodash';
 import { BrowserRouter as Router, Redirect, Link, Route } from 'react-router-dom';
 // Components
+import FormLogin from './Suggestions/FormLogin/Index.js';
 import FormCreate from './Suggestions/FormCreate/Index.js';
 import List from './Suggestions/List/Index.js';
 import Scraper from './Suggestions/Scraper/Index.js';
@@ -15,6 +16,8 @@ const App = () => (
             <header>
                 <nav>
                     <ul>
+                        <li><Link to="/admin">Dashboard</Link></li>
+                        <li><Link to="/login">Login</Link></li>
                         <li><Link to="/list">List</Link></li>
                         <li><Link to="/create">Create</Link></li>
                         <li><Link to="/scrape">Scrape</Link></li>
@@ -22,6 +25,7 @@ const App = () => (
                 </nav>
             </header>
             <div className="container">
+                <Route path="/login" component={FormLogin}/>
                 <Route path="/create" component={FormCreate}/>
                 <Route exact path="/list" component={List}/>
                 <Route path="/scrape" component={Scraper}/>

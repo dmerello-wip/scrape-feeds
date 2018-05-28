@@ -4,7 +4,7 @@ const passport = require('passport');
 const auth = require('./../auth');
 
 
-adminRouter.get('/', (req, res) => {
+adminRouter.get('/*', (req, res) => {
     if (req.session.token) {
         res.redirect('/dashboard');
     } else {

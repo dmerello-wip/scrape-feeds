@@ -1,18 +1,22 @@
 let app = require('./app/app');
-var https = require('https');
-var fs = require('fs');
 
-var key = fs.readFileSync('./server.key');
-var cert = fs.readFileSync( './server.crt' );
-var ca = fs.readFileSync( './server.crt' );
 
-var options = {
+let https = require('https');
+let fs = require('fs');
+
+let key = fs.readFileSync('./server.key');
+let cert = fs.readFileSync( './server.crt' );
+let ca = fs.readFileSync( './server.crt' );
+
+let options = {
     key: key,
     cert: cert,
     ca: ca
 };
 
-https.createServer(options, app).listen(443);
+https.createServer(options, app).listen(3043, function () {
+    console.log('app started');
+});
 
 app.use(function(req, res, next) {
     if (req.secure) {
