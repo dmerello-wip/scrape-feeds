@@ -1,16 +1,14 @@
+const baseUrlAdmin = 'admin/api';
 const baseUrl = 'api';
 const api = {
         suggestion : {
-            create  : baseUrl + '/suggestion/create',
-            update  : baseUrl + '/suggestion/update',
-            delete  : baseUrl + '/suggestion/delete',
+            create  : baseUrlAdmin + '/suggestion/create',
+            update  : baseUrlAdmin + '/suggestion/update',
+            delete  : baseUrlAdmin + '/suggestion/delete',
             get     : baseUrl + '/suggestion/get',
-            scrape  : baseUrl + '/suggestion/scrape',
+            scrape  : baseUrlAdmin + '/suggestion/scrape',
         },
         tag : {
-            create  : baseUrl + '/tag/create',
-            update  : baseUrl + '/tag/update',
-            delete  : baseUrl + '/tag/delete',
             get     : baseUrl + '/tag/get'
         }
     };
