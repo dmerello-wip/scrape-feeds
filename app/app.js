@@ -5,6 +5,7 @@ const adminRouting = require('./routes/admin');
 // passport auth
 const passport = require('passport');
 const auth = require('./auth');
+var parseurl = require('parseurl');
 const session = require('express-session');
 
 
@@ -15,14 +16,22 @@ auth(passport);
 app.use(passport.initialize());
 
 
-app.use(session(
-    {
-        secret: 'key-boh-secret',
-        cookie: { maxAge: 60000, secure:true },
-        resave: false,
-        saveUninitialized: true
-    }
-));
+
+app.use(session({
+	secret: 'auth-session',
+	resave: false,
+	saveUninitialized: true
+}))
+
+app.use(function (req, res, next) {
+	console.log('test session data: ')
+	if(req.session){
+		console.dir(req.session);
+	} else {
+		console.log(' > no passport token');
+	}
+	next();
+});
 
 
 /* ------------------------------------------------------ */
@@ -57,7 +66,7 @@ app.get('/auth/google/callback',
         console.log('google returned user:');
         console.dir(req.user);
         req.session.token = req.user.token;
-        res.next();
+        res.redirect('/dashboard');
     }
 );
 

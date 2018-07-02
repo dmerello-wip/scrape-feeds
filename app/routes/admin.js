@@ -39,7 +39,7 @@ const storeFields = multer({ storage: storage });
 /* ------------------------------------------------------ */
 
 adminRouter.post('/*', (req, res) => {
-	if (req.session.token) {
+	if(req.user) {
 		res.next();
 	} else {
 		res.json({'code': 400, 'message': [{
@@ -50,11 +50,6 @@ adminRouter.post('/*', (req, res) => {
 	}
 });
 
-adminRouter.get('/auth/logout', (req, res) => {
-    req.logout();
-    req.session = null;
-    res.redirect('/');
-});
 
 /* ------------------------------------------------------ */
 // Admin Api routes
