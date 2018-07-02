@@ -5,6 +5,10 @@ const adminRouter = express.Router();
 const passport = require('passport');
 const auth = require('./../auth');
 const multer = require('multer');
+const session = require('express-session');
+
+
+
 
 /* ------------------------------------------------------ */
 // File upload Configurations
@@ -34,16 +38,16 @@ const storeFields = multer({ storage: storage });
 // Admin routes
 /* ------------------------------------------------------ */
 
-
-adminRouter.get('/*', (req, res) => {
-	console.log('ADMIN API / access');
-    if (req.session.token) {
-		console.log('ADMIN API / access / token found');
-        res.redirect('/dashboard');
-    } else {
-		console.log('ADMIN API / access / token NOT found');
-        res.redirect('/error');
-    }
+adminRouter.post('/*', (req, res) => {
+	if (req.session.token) {
+		res.next();
+	} else {
+		res.json({'code': 400, 'message': [{
+				name: 'Permission error' ,
+				status: false,
+				message: 'You are not authenticated'
+			} ]});
+	}
 });
 
 adminRouter.get('/auth/logout', (req, res) => {

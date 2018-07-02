@@ -5,7 +5,7 @@ const adminRouting = require('./routes/admin');
 // passport auth
 const passport = require('passport');
 const auth = require('./auth');
-const session = require('express-session')
+const session = require('express-session');
 
 
 /* ------------------------------------------------------ */
@@ -57,7 +57,7 @@ app.get('/auth/google/callback',
         console.log('google returned user:');
         console.dir(req.user);
         req.session.token = req.user.token;
-        res.redirect('/admin');
+        res.next();
     }
 );
 
