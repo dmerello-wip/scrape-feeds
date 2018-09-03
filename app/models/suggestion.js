@@ -170,8 +170,8 @@ class Suggestion {
                     }
                 );
 
-            }).catch(()=>{
-                reject();
+            }).catch((err)=>{
+                reject(err);
             });
         });
     }

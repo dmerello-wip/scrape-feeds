@@ -94,6 +94,7 @@ class SuggestionCtrl {
                         scrapedData.tags = tags;
                         res.json({'code': 200, 'message': scrapedData});
                     }).catch((scraperErrors) => {
+                    console.dir(scraperErrors);
                         res.json({
                             'code': 400,
                             'message': [{

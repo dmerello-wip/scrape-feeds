@@ -2,10 +2,7 @@ const express = require('express');
 const appConfig = require('./../config.js');
 const suggestionCtrl = require('./../controllers/suggestion');
 const adminRouter = express.Router();
-const passport = require('passport');
-const auth = require('./../auth');
 const multer = require('multer');
-const session = require('express-session');
 
 
 /* ------------------------------------------------------ */
@@ -32,34 +29,11 @@ const storage = multer.diskStorage({
 const storeFields = multer({storage: storage});
 
 
-/* ------------------------------------------------------ */
-// Admin routes
-/* ------------------------------------------------------ */
-function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated()) {
-		return next();
-	} else {
-		res.json({
-			'code': 400, 'message': [{
-				name: 'Permission error',
-				status: false,
-				message: 'You are not authenticated'
-			}]
-		});
-	}
-}
-
-
 
 /* ------------------------------------------------------ */
 // Admin Api routes
 /* ------------------------------------------------------ */
-/*
-adminRouter.post('/api/suggestion/create', ensureAuthenticated,  storeFields.single('image'), suggestionCtrl.create);
-adminRouter.post('/api/suggestion/update', ensureAuthenticated,  storeFields.single('image'), suggestionCtrl.update);
-adminRouter.post('/api/suggestion/delete', ensureAuthenticated,  storeFields.any(), suggestionCtrl.delete);
-adminRouter.post('/api/suggestion/scrape', ensureAuthenticated,  storeFields.any(), suggestionCtrl.scrapeFromUrl);
-*/
+
 adminRouter.post('/api/suggestion/create', storeFields.single('image'), suggestionCtrl.create);
 adminRouter.post('/api/suggestion/update', storeFields.single('image'), suggestionCtrl.update);
 adminRouter.post('/api/suggestion/delete', storeFields.any(), suggestionCtrl.delete);

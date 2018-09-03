@@ -16,8 +16,6 @@ const App = () => (
             <header>
                 <nav>
                     <ul>
-                        <li><Link to="/admin">Dashboard</Link></li>
-                        <li><Link to="/login">Login</Link></li>
                         <li><Link to="/list">List</Link></li>
                         <li><Link to="/create">Create</Link></li>
                         <li><Link to="/scrape">Scrape</Link></li>
@@ -25,7 +23,6 @@ const App = () => (
                 </nav>
             </header>
             <div className="container">
-                <Route path="/login" component={FormLogin}/>
                 <Route path="/create" component={FormCreate}/>
                 <Route exact path="/list" component={List}/>
                 <Route path="/scrape" component={Scraper}/>
@@ -35,5 +32,4 @@ const App = () => (
 );
 
 
-// render(<Dashboard />, document.getElementById('app'));
 render(<App />, document.getElementById('app'));
