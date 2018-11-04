@@ -152,9 +152,13 @@ class Suggestion {
                 tags: {
                     selector: 'meta[name="keywords"]',
                     attr: "content"
-                }
+                },
+                url: {
+                    selector: 'meta[property="og:url"]',
+                    attr: "content"
+                },
             }).then(({data, response}) => {
-                // call data.image (image url) and get base64 data of it
+              // call data.image (image url) and get base64 data of it
                 if( data.image.startsWith("//") ) {
                   data.image = 'https://'+data.image.slice(2);
                 }
