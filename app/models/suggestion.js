@@ -155,6 +155,9 @@ class Suggestion {
                 }
             }).then(({data, response}) => {
                 // call data.image (image url) and get base64 data of it
+                if( data.image.startsWith("//") ) {
+                  data.image = 'https://'+data.image.slice(2);
+                }
                 require('request')(
                     {
                         url: data.image,
