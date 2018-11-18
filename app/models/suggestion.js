@@ -149,10 +149,6 @@ class Suggestion {
                     selector: 'meta[property="og:description"]',
                     attr: "content"
                 },
-                tags: {
-                    selector: 'meta[name="keywords"]',
-                    attr: "content"
-                },
                 url: {
                     selector: 'meta[property="og:url"]',
                     attr: "content"
