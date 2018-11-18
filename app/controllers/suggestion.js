@@ -1,5 +1,6 @@
 const SuggestionMdl = require('./../models/suggestion');
 const Validator = require('./../helpers/validator');
+const Fs = require('fs');
 
 
 class SuggestionCtrl {
@@ -106,6 +107,7 @@ class SuggestionCtrl {
                 res.json({'code': 400, 'message': validationErrors});
             });
     }
+
 
 }
 
