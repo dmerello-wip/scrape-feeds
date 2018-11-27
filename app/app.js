@@ -31,16 +31,21 @@ app.use('/admin', adminRouting);
 /* ------------------------------------------------------ */
 // IMPORT: create a cycle and import from file (no tags)
 /* ------------------------------------------------------ */
-app.use('/import', ()=>{
-  const data = JSON.parse(fs.readFileSync('import.json', 'utf8'));
-  console.log(data.articles[0]);
-  SuggestionMdl.scrapeNewSuggestion(data.articles[0])
+
+function importArticle(url){
+  SuggestionMdl.scrapeNewSuggestion(url)
     .then((scrapedData) => {
       SuggestionMdl.create(scrapedData);
-      console.log(`imported ${data.articles[0]}`);
+      console.log(`imported ${url}`);
     }).catch((scraperErrors) => {
     console.dir(scraperErrors);
   });
+}
+
+app.use('/import', ()=>{
+  const data = JSON.parse(fs.readFileSync('import.json', 'utf8'));
+  let i = 0;
+  importArticle(data.articles[i])
 });
 
 module.exports = app;
