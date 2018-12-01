@@ -5,7 +5,7 @@ const adminRouting = require('./routes/admin');
 var parseurl = require('parseurl');
 const session = require('express-session');
 let fs = require('fs');
-const SuggestionMdl = require('./models/suggestion');
+const Import = require('./controllers/import');
 
 
 
@@ -32,20 +32,11 @@ app.use('/admin', adminRouting);
 // IMPORT: create a cycle and import from file (no tags)
 /* ------------------------------------------------------ */
 
-function importArticle(url){
-  SuggestionMdl.scrapeNewSuggestion(url)
-    .then((scrapedData) => {
-      SuggestionMdl.create(scrapedData);
-      console.log(`imported ${url}`);
-    }).catch((scraperErrors) => {
-    console.dir(scraperErrors);
-  });
-}
 
 app.use('/import', ()=>{
   const data = JSON.parse(fs.readFileSync('import.json', 'utf8'));
-  let i = 0;
-  importArticle(data.articles[i])
+  let i = new Import(data.articles);
 });
+
 
 module.exports = app;
