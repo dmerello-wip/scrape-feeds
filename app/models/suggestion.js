@@ -169,6 +169,7 @@ class Suggestion {
                         var base64  = new Buffer(b, 'binary').toString('base64');
                         var dataURI = prefix + base64;
                         data.image = dataURI;
+                        console.dir(data.image);
                         resolve(data);
                     }
                 );
