@@ -1,10 +1,11 @@
 var mysql = require('mysql');
 
+// todo: put it in configs
 var pool = mysql.createPool({
     connectionLimit : 100,
     host     : 'localhost',
-    user     : 'root',
-    password : 'nimda',
+    user     : 'suggestions',
+    password : 'suggestions',
     database : 'suggestions',
     debug    :  false
 });
