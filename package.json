@@ -27,7 +27,7 @@
     "webpack": "^3.8.1"
   },
   "dependencies": {
-    "async": "^2.6.0",
+    "async": "^2.6.4",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "cookie-parser": "^1.4.3",
